@@ -11,28 +11,31 @@ namespace Teamleader\Entities;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
 
-class Company extends Model {
+class Contact extends Model {
     use Storable;
 
     protected $fillable = [
         'id',
-        'name',
-        'business_type_id',
-        'vat_number',
-        'local_business_number',
+        'first_name',
+        'last_name',
         'emails',
+        'salutation',
         'telephones',
         'website',
         'addresses',
+        'language',
+        'gender',
+        'birthdate',
         'iban',
         'bic',
-        'language',
-        'responsible_user_id',
         'remarks',
+        'tags',
+        'custom_fields',
+        'marketing_mails_consent',
     ];
 
     /**
      * @var string
      */
-    protected $endpoint = 'companies';
+    protected $endpoint = 'contacts';
 }
