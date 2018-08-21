@@ -11,6 +11,8 @@ namespace Teamleader;
 use Teamleader\Entities\Company;
 use Teamleader\Entities\Contact;
 use Teamleader\Entities\Deal;
+use Teamleader\Entities\DealPhase;
+use Teamleader\Entities\DealSource;
 
 class Client {
     /**
@@ -39,5 +41,13 @@ class Client {
 
     public function deal( $attributes = [] ) {
         return new Deal( $this->connection, $attributes );
+    }
+
+    public function dealPhase( $attributes = [] ) {
+        return new DealPhase( $this->connection, $attributes );
+    }
+
+    public function dealSource( $attributes = [] ) {
+        return new DealSource( $this->connection, $attributes );
     }
 }
