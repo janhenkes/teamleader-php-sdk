@@ -17,6 +17,9 @@ use GuzzleHttp\Psr7;
 use Teamleader\Exceptions\Api\TooManyRequestsException;
 use Teamleader\Exceptions\ApiException;
 use Psr\Http\Message\ResponseInterface;
+use Teamleader\Exceptions\InvalidAccessTokenException;
+use Teamleader\Handlers\CacheHandlerInterface;
+use Teamleader\Handlers\DefaultCacheHandler;
 
 class Connection {
 
@@ -76,6 +79,52 @@ class Connection {
     protected $middleWares = [];
 
     /**
+     * @var CacheHandlerInterface
+     */
+    private $cacheHandler;
+
+    public function __construct( $cacheHandler = null ) {
+        $this->client();
+        $this->cacheHandler = $cacheHandler instanceof CacheHandlerInterface ? $cacheHandler : new DefaultCacheHandler();
+    }
+
+    public function getAccessToken() {
+        // Check if tokens exist
+        if ( empty( $this->cacheHandler->get( 'accessToken' ) ) || empty( $this->cacheHandler->get( 'refreshToken' ) ) || empty( $this->cacheHandler->get( 'tokenExpire' ) ) ) {
+            return false;
+        }
+
+        // Check if token is expired
+        // Get current time + 5 minutes (to allow for time differences)
+        $now = time() + 300;
+        if ( $this->cacheHandler->get( 'tokenExpire' ) <= $now ) {
+            $this->acquireRefreshToken();
+
+            return $this->getAccessToken();
+        }
+
+        return $this->cacheHandler->get( 'accessToken' );
+    }
+
+    /**
+     * @param string $accessToken
+     * @param string $refreshToken
+     * @param int    $expiresIn Seconds
+     * @param int    $expiresOn Timestamp
+     */
+    public function storeTokens( string $accessToken, string $refreshToken, int $expiresIn, int $expiresOn ) {
+        $this->cacheHandler->set( 'accessToken', $accessToken, $expiresIn / 60 );
+        $this->cacheHandler->set( 'refreshToken', $refreshToken, $expiresIn / 60 );
+        $this->cacheHandler->set( 'tokenExpire', $expiresOn, $expiresIn / 60 );
+    }
+
+    public function clearTokens() {
+        $this->cacheHandler->forget( 'accessToken' );
+        $this->cacheHandler->forget( 'refreshToken' );
+        $this->cacheHandler->forget( 'tokenExpire' );
+    }
+
+    /**
      * @return \GuzzleHttp\Client
      */
     private function client() {
@@ -93,23 +142,6 @@ class Connection {
             'handler'     => $handlerStack,
             'expect'      => false,
         ] );
-
-        return $this->client;
-    }
-
-    /**
-     * @return \GuzzleHttp\Client
-     * @throws ApiException
-     */
-    public function connect() {
-        // If access token is not set or token has expired, acquire new token
-        if ( empty( $this->accessToken ) ) {
-            $this->acquireAccessToken();
-        }
-
-        $client = $this->client();
-
-        return $client;
     }
 
     /**
@@ -132,7 +164,37 @@ class Connection {
     /**
      * @throws ApiException
      */
-    private function acquireAccessToken() {
+    private function acquireRefreshToken() {
+        $body = [
+            'form_params' => [
+                'client_id'     => $this->clientId,
+                'client_secret' => $this->clientSecret,
+                'refresh_token' => $this->cacheHandler->get( 'refreshToken' ),
+                'grant_type'    => 'refresh_token',
+            ],
+        ];
+
+        $response = $this->client()->post( $this->getTokenUrl(), $body );
+
+        if ( $response->getStatusCode() == 200 ) {
+            Psr7\rewind_body( $response );
+            $body = json_decode( $response->getBody()->getContents(), true );
+
+            if ( json_last_error() === JSON_ERROR_NONE ) {
+                $this->accessToken = array_key_exists( 'access_token', $body ) ? $body['access_token'] : null;
+                $this->storeTokens( $body['access_token'], $body['refresh_token'], $body['expires_in'], time() + $body['expires_in'] );
+            } else {
+                throw new ApiException( 'Could not acquire tokens, json decode failed. Got response: ' . $response->getBody()->getContents() );
+            }
+        } else {
+            throw new ApiException( 'Could not acquire or refresh tokens' );
+        }
+    }
+
+    /**
+     * @throws ApiException
+     */
+    public function acquireAccessToken() {
         if ( empty( $_GET['code'] ) ) {
             $this->authorizeRedirect();
         }
@@ -157,6 +219,7 @@ class Connection {
 
             if ( json_last_error() === JSON_ERROR_NONE ) {
                 $this->accessToken = array_key_exists( 'access_token', $body ) ? $body['access_token'] : null;
+                $this->storeTokens( $body['access_token'], $body['refresh_token'], $body['expires_in'], time() + $body['expires_in'] );
             } else {
                 throw new ApiException( 'Could not acquire tokens, json decode failed. Got response: ' . $response->getBody()->getContents() );
             }
@@ -183,142 +246,147 @@ class Connection {
     /**
      * @return string
      */
-    public function getTokenUrl()
-    {
+    public function getTokenUrl() {
         return $this->tokenUrl;
     }
 
     /**
      * @param string $method
      * @param string $endpoint
-     * @param null $body
-     * @param array $params
-     * @param array $headers
+     * @param null   $body
+     * @param array  $params
+     * @param array  $headers
+     *
+     * @throws InvalidAccessTokenException
      * @return Request
      */
-    private function createRequest($method = 'GET', $endpoint, $body = null, array $params = [], array $headers = [])
-    {
+    private function createRequest( $method = 'GET', $endpoint, $body = null, array $params = [], array $headers = [] ) {
         // Add default json headers to the request
-        $headers = array_merge($headers, [
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json'
-        ]);
+        $headers = array_merge( $headers, [
+            'Accept'       => 'application/json',
+            'Content-Type' => 'application/json',
+        ] );
 
         // If access token is not set or token has expired, acquire new token
-        if (empty($this->accessToken)) {
-            $this->acquireAccessToken();
+        if ( empty( $this->getAccessToken() ) ) {
+            throw new InvalidAccessTokenException( 'Invalid access token, please acquire a new one.' );
         }
 
         // If we have a token, sign the request
-        if (! empty($this->accessToken)) {
-            $headers['Authorization'] = 'Bearer ' . $this->accessToken;
+        if ( ! empty( $this->getAccessToken() ) ) {
+            $headers['Authorization'] = 'Bearer ' . $this->getAccessToken();
         }
 
         // Create param string
-        if (!empty($params)) {
-            $endpoint .= '?' . http_build_query($params);
+        if ( ! empty( $params ) ) {
+            $endpoint .= '?' . http_build_query( $params );
         }
 
         // Create the request
-        $request = new Request($method, $endpoint, $headers, $body);
+        $request = new Request( $method, $endpoint, $headers, $body );
 
         return $request;
     }
 
     /**
-     * @param string $url
+     * @param       $url
      * @param array $params
-     * @param bool $fetchAll
-     * @return mixed
+     * @param bool  $fetchAll
+     *
+     * @return array|mixed
      * @throws ApiException
+     * @throws TooManyRequestsException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function get($url, array $params = [], $fetchAll = false)
-    {
+    public function get( $url, array $params = [], $fetchAll = false ) {
         try {
-            $request = $this->createRequest('GET', $this->formatUrl($url, 'get'), null, $params);
-            $response = $this->client()->send($request);
+            $request  = $this->createRequest( 'GET', $this->formatUrl( $url, 'get' ), null, $params );
+            $response = $this->client()->send( $request );
 
-            $json = $this->parseResponse($response);
+            $json = $this->parseResponse( $response );
 
-            if ($fetchAll === true) {
-                if (($nextParams = $this->getNextParams($response->getHeaderLine('Link')))) {
-                    $json = array_merge($json, $this->get($url, $nextParams, $fetchAll));
+            if ( $fetchAll === true ) {
+                if ( ( $nextParams = $this->getNextParams( $response->getHeaderLine( 'Link' ) ) ) ) {
+                    $json = array_merge( $json, $this->get( $url, $nextParams, $fetchAll ) );
                 }
             }
 
             return $json;
-        } catch (Exception $e) {
-            $this->parseExceptionForErrorMessages($e);
+        } catch ( Exception $e ) {
+            $this->parseExceptionForErrorMessages( $e );
         }
     }
 
     /**
      * @param string $url
      * @param string $body
+     *
      * @return mixed
      * @throws ApiException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function post($url, $body)
-    {
+    public function post( $url, $body ) {
         try {
-            $request = $this->createRequest('POST', $this->formatUrl($url, 'post'), $body);
-            $response = $this->client()->send($request);
+            $request  = $this->createRequest( 'POST', $this->formatUrl( $url, 'post' ), $body );
+            $response = $this->client()->send( $request );
 
-            return $this->parseResponse($response);
-        } catch (Exception $e) {
-            $this->parseExceptionForErrorMessages($e);
+            return $this->parseResponse( $response );
+        } catch ( Exception $e ) {
+            $this->parseExceptionForErrorMessages( $e );
         }
     }
 
     /**
      * @param string $url
      * @param string $body
+     *
      * @return mixed
      * @throws ApiException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function patch($url, $body)
-    {
+    public function patch( $url, $body ) {
         try {
-            $request = $this->createRequest('PATCH', $this->formatUrl($url, 'patch'), $body);
-            $response = $this->client()->send($request);
+            $request  = $this->createRequest( 'PATCH', $this->formatUrl( $url, 'patch' ), $body );
+            $response = $this->client()->send( $request );
 
-            return $this->parseResponse($response);
-        } catch (Exception $e) {
-            $this->parseExceptionForErrorMessages($e);
+            return $this->parseResponse( $response );
+        } catch ( Exception $e ) {
+            $this->parseExceptionForErrorMessages( $e );
         }
     }
 
     /**
      * @param string $url
+     *
      * @return mixed
      * @throws ApiException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function delete($url)
-    {
+    public function delete( $url ) {
         try {
-            $request = $this->createRequest('DELETE', $this->formatUrl($url, 'delete'));
-            $response = $this->client()->send($request);
+            $request  = $this->createRequest( 'DELETE', $this->formatUrl( $url, 'delete' ) );
+            $response = $this->client()->send( $request );
 
-            return $this->parseResponse($response);
-        } catch (Exception $e) {
-            $this->parseExceptionForErrorMessages($e);
+            return $this->parseResponse( $response );
+        } catch ( Exception $e ) {
+            $this->parseExceptionForErrorMessages( $e );
         }
     }
 
     /**
      * @param Response $response
+     *
      * @return mixed
      * @throws ApiException
      */
-    private function parseResponse(Response $response)
-    {
+    private function parseResponse( Response $response ) {
         try {
-            Psr7\rewind_body($response);
-            $json = json_decode($response->getBody()->getContents(), true);
+            Psr7\rewind_body( $response );
+            $json = json_decode( $response->getBody()->getContents(), true );
 
             return $json;
-        } catch (\RuntimeException $e) {
-            throw new ApiException($e->getMessage());
+        } catch ( \RuntimeException $e ) {
+            throw new ApiException( $e->getMessage() );
         }
     }
 
@@ -329,42 +397,40 @@ class Connection {
      *
      * @throws ApiException | TooManyRequestsException
      */
-    private function parseExceptionForErrorMessages(Exception $exception)
-    {
-        if (!$exception instanceof BadResponseException) {
-            throw new ApiException($exception->getMessage());
+    private function parseExceptionForErrorMessages( Exception $exception ) {
+        if ( ! $exception instanceof BadResponseException ) {
+            throw new ApiException( $exception->getMessage() );
         }
 
         $response = $exception->getResponse();
-        Psr7\rewind_body($response);
-        $responseBody = $response->getBody()->getContents();
-        $decodedResponseBody = json_decode($responseBody, true);
+        Psr7\rewind_body( $response );
+        $responseBody        = $response->getBody()->getContents();
+        $decodedResponseBody = json_decode( $responseBody, true );
 
-        if (!is_null($decodedResponseBody) && isset($decodedResponseBody['error']['message']['value'])) {
+        if ( ! is_null( $decodedResponseBody ) && isset( $decodedResponseBody['error']['message']['value'] ) ) {
             $errorMessage = $decodedResponseBody['error']['message']['value'];
         } else {
             $errorMessage = $responseBody;
         }
 
-        $this->checkWhetherRateLimitHasBeenReached($response, $errorMessage);
+        $this->checkWhetherRateLimitHasBeenReached( $response, $errorMessage );
 
-        throw new ApiException('Error ' . $response->getStatusCode() . ': ' . $errorMessage, $response->getStatusCode());
+        throw new ApiException( 'Error ' . $response->getStatusCode() . ': ' . $errorMessage, $response->getStatusCode() );
     }
 
     /**
      * @param ResponseInterface $response
-     * @param string $errorMessage
+     * @param string            $errorMessage
      *
      * @return void
      *
      * @throws TooManyRequestsException
      */
-    private function checkWhetherRateLimitHasBeenReached(ResponseInterface $response, $errorMessage)
-    {
-        $retryAfterHeaders = $response->getHeader('Retry-After');
-        if($response->getStatusCode() === 429 && count($retryAfterHeaders) > 0){
-            $exception = new TooManyRequestsException('Error ' . $response->getStatusCode() . ': ' . $errorMessage, $response->getStatusCode());
-            $exception->retryAfterNumberOfSeconds = (int) current($retryAfterHeaders);
+    private function checkWhetherRateLimitHasBeenReached( ResponseInterface $response, $errorMessage ) {
+        $retryAfterHeaders = $response->getHeader( 'Retry-After' );
+        if ( $response->getStatusCode() === 429 && count( $retryAfterHeaders ) > 0 ) {
+            $exception                            = new TooManyRequestsException( 'Error ' . $response->getStatusCode() . ': ' . $errorMessage, $response->getStatusCode() );
+            $exception->retryAfterNumberOfSeconds = (int) current( $retryAfterHeaders );
 
             throw $exception;
         }
@@ -376,8 +442,7 @@ class Connection {
      *
      * @return string
      */
-    private function formatUrl($url, $method = 'get')
-    {
-        return $this->apiUrl . '/'  . $url;
+    private function formatUrl( $url, $method = 'get' ) {
+        return $this->apiUrl . '/' . $url;
     }
 }
