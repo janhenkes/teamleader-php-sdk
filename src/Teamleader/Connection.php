@@ -318,6 +318,26 @@ class Connection {
     }
 
     /**
+     * @param $headerLine
+     * @return bool | array
+     */
+    private function getNextParams($headerLine)
+    {
+        $links = Psr7\parse_header($headerLine);
+
+        foreach ($links as $link) {
+            if (isset($link['rel']) && $link['rel'] === 'next') {
+                $query = parse_url(trim($link[0], '<>'), PHP_URL_QUERY);
+                parse_str($query, $params);
+
+                return $params;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param string $url
      * @param string $body
      *

@@ -274,6 +274,10 @@ abstract class Model {
      * @return array
      */
     public function collectionFromResult( $result ) {
+        if ( isset( $result['data'] ) ) {
+            $result = $result['data'];
+        }
+
         // If we have one result which is not an assoc array, make it the first element of an array for the
         // collectionFromResult function so we always return a collection from filter
         if ( (bool) count( array_filter( array_keys( $result ), 'is_string' ) ) ) {
