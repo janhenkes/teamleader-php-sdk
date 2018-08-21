@@ -9,6 +9,8 @@
 namespace Teamleader;
 
 use Teamleader\Entities\Company;
+use Teamleader\Entities\Contact;
+use Teamleader\Entities\Deal;
 
 class Client {
     /**
@@ -29,5 +31,13 @@ class Client {
 
     public function company( $attributes = [] ) {
         return new Company( $this->connection, $attributes );
+    }
+
+    public function contact( $attributes = [] ) {
+        return new Contact( $this->connection, $attributes );
+    }
+
+    public function deal( $attributes = [] ) {
+        return new Deal( $this->connection, $attributes );
     }
 }

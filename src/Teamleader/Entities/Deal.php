@@ -31,5 +31,14 @@ class Deal extends Model {
     /**
      * @var string
      */
-    protected $endpoint = 'contacts';
+    protected $endpoint = 'deals';
+
+    /**
+     * @return mixed
+     */
+    public function insert() {
+        $result = $this->connection()->post( $this->getEndpoint() . '.create', $this->jsonWithNamespace() );
+
+        return $this->selfFromResponse( $result );
+    }
 }
