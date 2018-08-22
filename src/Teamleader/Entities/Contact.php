@@ -56,6 +56,6 @@ class Contact extends Model {
 
         $result = $this->connection()->post( $this->getEndpoint() . '.linkToCompany', json_encode( $arguments, JSON_FORCE_OBJECT ) );
 
-        return $this->selfFromResponse( $result );
+        return $result;
     }
 }
