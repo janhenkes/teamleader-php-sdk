@@ -52,6 +52,8 @@ class Contact extends Model {
             'decision_maker' => true,
         ]
     ) {
+        $arguments['id'] = $this->attributes['id'];
+
         $result = $this->connection()->post( $this->getEndpoint() . '.linkToCompany', json_encode( $arguments, JSON_FORCE_OBJECT ) );
 
         return $this->selfFromResponse( $result );
