@@ -6,7 +6,7 @@ Please note that the Teamleader API v2 is not complete and some Entities and Act
 Currently we only support a few entities and per entity only a few actions:
 
 1. Company (create and update)
-2. Contact (create and update)
+2. Contact (create, update, linkToCompany)
 3. Deal (create and update)
 4. Deal phases (get)
 5. Deal sources (get)
@@ -61,6 +61,13 @@ $dealPhases = $client->dealPhase()->get();
 - [ ] Add all other Entities
 
 # Change log
+
+## 1.2.0 (2018-08-23)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/1.1.1...1.2.0)
+
+**Features:**
+
+- Added Contact->linkToCompany Action
 
 ## 1.1.1 (2018-08-23)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/1.1.0...1.1.1)

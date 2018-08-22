@@ -9,6 +9,7 @@
 namespace Teamleader\Entities;
 
 use Teamleader\Actions\Storable;
+use Teamleader\Exceptions\ApiException;
 use Teamleader\Model;
 
 class Contact extends Model {
@@ -38,4 +39,21 @@ class Contact extends Model {
      * @var string
      */
     protected $endpoint = 'contacts';
+
+    /**
+     * @param array $arguments
+     *
+     * @return mixed
+     */
+    public function linkToCompany(
+        $arguments = [
+            'company_id'     => '',
+            'position'       => '',
+            'decision_maker' => true,
+        ]
+    ) {
+        $result = $this->connection()->post( $this->getEndpoint() . '.linkToCompany', json_encode( $arguments, JSON_FORCE_OBJECT ) );
+
+        return $this->selfFromResponse( $result );
+    }
 }
