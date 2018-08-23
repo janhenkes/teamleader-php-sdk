@@ -88,6 +88,10 @@ class Connection {
         $this->cacheHandler = $cacheHandler instanceof CacheHandlerInterface ? $cacheHandler : new DefaultCacheHandler();
     }
 
+    /**
+     * @return bool|mixed
+     * @throws ApiException
+     */
     public function getAccessToken() {
         // Check if tokens exist
         if ( empty( $this->cacheHandler->get( 'accessToken' ) ) || empty( $this->cacheHandler->get( 'refreshToken' ) ) || empty( $this->cacheHandler->get( 'tokenExpire' ) ) ) {
@@ -259,6 +263,7 @@ class Connection {
      *
      * @throws InvalidAccessTokenException
      * @return Request
+     * @throws ApiException
      */
     private function createRequest( $method = 'GET', $endpoint, $body = null, array $params = [], array $headers = [] ) {
         // Add default json headers to the request
@@ -297,6 +302,7 @@ class Connection {
      * @throws ApiException
      * @throws TooManyRequestsException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws InvalidAccessTokenException
      */
     public function get( $url, array $params = [], $fetchAll = false ) {
         try {
@@ -319,16 +325,16 @@ class Connection {
 
     /**
      * @param $headerLine
+     *
      * @return bool | array
      */
-    private function getNextParams($headerLine)
-    {
-        $links = Psr7\parse_header($headerLine);
+    private function getNextParams( $headerLine ) {
+        $links = Psr7\parse_header( $headerLine );
 
-        foreach ($links as $link) {
-            if (isset($link['rel']) && $link['rel'] === 'next') {
-                $query = parse_url(trim($link[0], '<>'), PHP_URL_QUERY);
-                parse_str($query, $params);
+        foreach ( $links as $link ) {
+            if ( isset( $link['rel'] ) && $link['rel'] === 'next' ) {
+                $query = parse_url( trim( $link[0], '<>' ), PHP_URL_QUERY );
+                parse_str( $query, $params );
 
                 return $params;
             }
@@ -344,6 +350,7 @@ class Connection {
      * @return mixed
      * @throws ApiException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws InvalidAccessTokenException
      */
     public function post( $url, $body ) {
         try {
@@ -363,6 +370,7 @@ class Connection {
      * @return mixed
      * @throws ApiException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws InvalidAccessTokenException
      */
     public function patch( $url, $body ) {
         try {
@@ -381,6 +389,7 @@ class Connection {
      * @return mixed
      * @throws ApiException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws InvalidAccessTokenException
      */
     public function delete( $url ) {
         try {
@@ -415,9 +424,15 @@ class Connection {
      *
      * @param Exception $exception
      *
-     * @throws ApiException | TooManyRequestsException
+     * @throws ApiException
+     * @throws TooManyRequestsException
+     * @throws InvalidAccessTokenException
      */
     private function parseExceptionForErrorMessages( Exception $exception ) {
+        if ( $exception instanceof InvalidAccessTokenException ) {
+            throw $exception;
+        }
+
         if ( ! $exception instanceof BadResponseException ) {
             throw new ApiException( $exception->getMessage() );
         }
