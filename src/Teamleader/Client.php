@@ -13,6 +13,7 @@ use Teamleader\Entities\Contact;
 use Teamleader\Entities\Deal;
 use Teamleader\Entities\DealPhase;
 use Teamleader\Entities\DealSource;
+use Teamleader\Entities\Webhook;
 
 class Client {
     /**
@@ -49,5 +50,9 @@ class Client {
 
     public function dealSource( $attributes = [] ) {
         return new DealSource( $this->connection, $attributes );
+    }
+
+    public function webhook( $attributes = [] ) {
+        return new Webhook( $this->connection, $attributes );
     }
 }
