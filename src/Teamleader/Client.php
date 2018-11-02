@@ -14,6 +14,7 @@ use Teamleader\Entities\Deal;
 use Teamleader\Entities\DealPhase;
 use Teamleader\Entities\DealSource;
 use Teamleader\Entities\Webhook;
+use Teamleader\Entities\Migrate;
 
 class Client {
     /**
