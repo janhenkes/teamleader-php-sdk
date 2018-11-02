@@ -55,4 +55,8 @@ class Client {
     public function webhook( $attributes = [] ) {
         return new Webhook( $this->connection, $attributes );
     }
+
+    public function migrate( $attributes = [] ) {
+        return new Migrate( $this->connection, $attributes );
+    }
 }
