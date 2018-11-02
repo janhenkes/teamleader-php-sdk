@@ -41,4 +41,15 @@ class Deal extends Model {
 
         return $this->selfFromResponse( $result );
     }
+
+    public function move( $phaseId ) {
+        $arguments = [
+            'id'       => $this->attributes['id'],
+            'phase_id' => $phaseId,
+        ];
+
+        $result = $this->connection()->post( $this->getEndpoint() . '.move', json_encode( $arguments, JSON_FORCE_OBJECT ) );
+
+        return $result;
+    }
 }
