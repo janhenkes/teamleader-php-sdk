@@ -23,7 +23,12 @@ trait Storable {
      * @return mixed
      */
     public function insert() {
-        $result = $this->connection()->post( $this->getEndpoint() . '.add', $this->jsonWithNamespace() );
+        $action = 'add';
+        if (property_exists($this, 'createAction')) {
+            $action = $this->createAction;
+        }
+
+        $result = $this->connection()->post( $this->getEndpoint() . '.' . $action, $this->jsonWithNamespace() );
 
         return $this->selfFromResponse( $result );
     }
