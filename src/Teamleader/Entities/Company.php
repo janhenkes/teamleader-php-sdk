@@ -19,7 +19,7 @@ class Company extends Model {
         'name',
         'business_type_id',
         'vat_number',
-        'local_business_number',
+        'national_identification_number',
         'emails',
         'telephones',
         'website',
