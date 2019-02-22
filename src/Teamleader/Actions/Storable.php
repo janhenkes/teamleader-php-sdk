@@ -45,4 +45,20 @@ trait Storable {
         return $this->selfFromResponse( $result );
     }
 
+    /**
+     * @return mixed
+     */
+    public function remove() {
+        $action = 'delete';
+        if (property_exists($this, 'deleteAction')) {
+            $action = $this->deleteAction;
+        }
+
+        $result = $this->connection()->post( $this->getEndpoint() . '.' . $action, $this->jsonWithNamespace() );
+        if ( $result === 204 ) {
+            return true;
+        }
+
+        return $result;
+    }
 }
