@@ -8,6 +8,7 @@
 
 namespace Teamleader;
 
+use Teamleader\Entities\Calendar\ActivityType;
 use Teamleader\Entities\Company;
 use Teamleader\Entities\Contact;
 use Teamleader\Entities\Deal;
@@ -59,5 +60,9 @@ class Client {
 
     public function migrate( $attributes = [] ) {
         return new Migrate( $this->connection, $attributes );
+    }
+
+    public function activityType( $attributes = [] ) {
+        return new ActivityType( $this->connection, $attributes );
     }
 }
