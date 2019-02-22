@@ -13,6 +13,7 @@ class Event extends Model
 
     // define the action because some endpoints use add and some use create
     private $createAction = 'create';
+    private $deleteAction = 'cancel';
 
     protected $fillable = [
         'id',
