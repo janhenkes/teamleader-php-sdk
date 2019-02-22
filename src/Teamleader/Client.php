@@ -11,6 +11,7 @@ namespace Teamleader;
 use Teamleader\Entities\Calendar\ActivityType;
 use Teamleader\Entities\Company;
 use Teamleader\Entities\Contact;
+use Teamleader\Entities\CRM\Tag;
 use Teamleader\Entities\Deal;
 use Teamleader\Entities\DealPhase;
 use Teamleader\Entities\DealSource;
@@ -64,5 +65,9 @@ class Client {
 
     public function activityType( $attributes = [] ) {
         return new ActivityType( $this->connection, $attributes );
+    }
+    
+    public function tag( $attributes = [] ) {
+        return new Tag( $this->connection, $attributes );
     }
 }
