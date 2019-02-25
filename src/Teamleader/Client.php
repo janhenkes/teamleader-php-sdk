@@ -11,6 +11,7 @@ use Teamleader\Entities\CRM\Tag;
 use Teamleader\Entities\Deal;
 use Teamleader\Entities\DealPhase;
 use Teamleader\Entities\DealSource;
+use Teamleader\Entities\Invoicing\Invoice;
 use Teamleader\Entities\Webhook;
 use Teamleader\Entities\Migrate;
 
@@ -72,6 +73,10 @@ class Client {
     }
   
     public function event( $attributes = [] ) {
-        return new Event( $this->connection, $attributes );
+        return new Event($this->connection, $attributes);
+    }
+
+    public function invoice( $attributes = [] ) {
+        return new Invoice( $this->connection, $attributes );
     }
 }
