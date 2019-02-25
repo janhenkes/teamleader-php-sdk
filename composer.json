@@ -21,5 +21,8 @@
         "psr-4": {
             "Teamleader\\": "src/Teamleader"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
     }
 }
