@@ -1,14 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: janhenkes
- * Date: 20/08/2018
- * Time: 14:06
- */
 
 namespace Teamleader;
 
 use Teamleader\Entities\Calendar\ActivityType;
+use Teamleader\Entities\Calendar\Event;
 use Teamleader\Entities\Company;
 use Teamleader\Entities\Contact;
 use Teamleader\Entities\CRM\Tag;
@@ -69,5 +64,9 @@ class Client {
     
     public function tag( $attributes = [] ) {
         return new Tag( $this->connection, $attributes );
+    }
+  
+    public function event( $attributes = [] ) {
+        return new Event( $this->connection, $attributes );
     }
 }
