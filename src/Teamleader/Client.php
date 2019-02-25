@@ -60,7 +60,6 @@ class Client {
     public function activityType( $attributes = [] ) {
         return new ActivityType( $this->connection, $attributes );
     }
-
     public function event( $attributes = [] ) {
         return new Event( $this->connection, $attributes );
     }
