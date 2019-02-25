@@ -6,6 +6,7 @@ use Teamleader\Entities\Calendar\ActivityType;
 use Teamleader\Entities\Calendar\Event;
 use Teamleader\Entities\Company;
 use Teamleader\Entities\Contact;
+use Teamleader\Entities\CRM\BusinessType;
 use Teamleader\Entities\CRM\Tag;
 use Teamleader\Entities\Deal;
 use Teamleader\Entities\DealPhase;
@@ -60,6 +61,10 @@ class Client {
 
     public function activityType( $attributes = [] ) {
         return new ActivityType( $this->connection, $attributes );
+    }
+
+    public function businessType( $attributes = [] ) {
+        return new BusinessType( $this->connection, $attributes );
     }
     
     public function tag( $attributes = [] ) {
