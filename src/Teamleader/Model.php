@@ -274,6 +274,10 @@ abstract class Model {
      * @return array
      */
     public function collectionFromResult( $result ) {
+        if (!$result) {
+            return [];
+        }
+
         if ( isset( $result['data'] ) ) {
             $result = $result['data'];
         }
