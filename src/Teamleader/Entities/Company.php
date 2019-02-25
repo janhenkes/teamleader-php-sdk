@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: janhenkes
- * Date: 20/08/2018
- * Time: 14:27
- */
 
 namespace Teamleader\Entities;
 
