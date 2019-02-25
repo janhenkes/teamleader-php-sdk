@@ -23,7 +23,12 @@ trait Storable {
      * @return mixed
      */
     public function insert() {
-        $result = $this->connection()->post( $this->getEndpoint() . '.add', $this->jsonWithNamespace() );
+        $action = 'add';
+        if (property_exists($this, 'createAction')) {
+            $action = $this->createAction;
+        }
+
+        $result = $this->connection()->post( $this->getEndpoint() . '.' . $action, $this->jsonWithNamespace() );
 
         return $this->selfFromResponse( $result );
     }
@@ -40,4 +45,20 @@ trait Storable {
         return $this->selfFromResponse( $result );
     }
 
+    /**
+     * @return mixed
+     */
+    public function remove() {
+        $action = 'delete';
+        if (property_exists($this, 'deleteAction')) {
+            $action = $this->deleteAction;
+        }
+
+        $result = $this->connection()->post( $this->getEndpoint() . '.' . $action, $this->jsonWithNamespace() );
+        if ( $result === 204 ) {
+            return true;
+        }
+
+        return $result;
+    }
 }
