@@ -2,7 +2,7 @@
 
 class DealSourceTest extends \PHPUnit\Framework\TestCase
 {
-    public function testEntity()
+    public function testEntity(): void
     {
         $connectionMock = $this->createMock(\Teamleader\Connection::class);
         $connectionMock->method('get')
