@@ -11,6 +11,7 @@ use Teamleader\Entities\CRM\Tag;
 use Teamleader\Entities\Deal;
 use Teamleader\Entities\DealPhase;
 use Teamleader\Entities\DealSource;
+use Teamleader\Entities\Invoicing\CreditNote;
 use Teamleader\Entities\Invoicing\Invoice;
 use Teamleader\Entities\Webhook;
 use Teamleader\Entities\Migrate;
@@ -78,5 +79,9 @@ class Client {
 
     public function invoice( $attributes = [] ) {
         return new Invoice( $this->connection, $attributes );
+    }
+
+    public function creditNote( $attributes = [] ) {
+        return new CreditNote( $this->connection, $attributes );
     }
 }
