@@ -13,7 +13,7 @@ class Event extends Model
     use FindAll;
     use FindById;
 
-    // define the action because some endpoints use add and some use create
+    // define the action because endpoints can differ
     private $createAction = 'create';
     private $deleteAction = 'cancel';
 
