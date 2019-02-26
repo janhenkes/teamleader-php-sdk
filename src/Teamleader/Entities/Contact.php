@@ -2,10 +2,13 @@
 
 namespace Teamleader\Entities;
 
+use Teamleader\Actions\FindAll;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
 
-class Contact extends Model {
+class Contact extends Model
+{
+    use FindAll;
     use Storable;
 
     protected $fillable = [
