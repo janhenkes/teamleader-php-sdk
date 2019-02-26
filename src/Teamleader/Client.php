@@ -11,6 +11,7 @@ use Teamleader\Entities\CRM\Tag;
 use Teamleader\Entities\Deal;
 use Teamleader\Entities\DealPhase;
 use Teamleader\Entities\DealSource;
+use Teamleader\Entities\General\Department;
 use Teamleader\Entities\Invoicing\CreditNote;
 use Teamleader\Entities\Invoicing\Invoice;
 use Teamleader\Entities\Invoicing\PaymentTerm;
@@ -98,5 +99,9 @@ class Client {
 
     public function withholdingTaxRate( $attributes = [] ) {
         return new WithholdingTaxRate( $this->connection, $attributes );
+    }
+
+    public function department( $attributes = [] ) {
+        return new Department( $this->connection, $attributes );
     }
 }
