@@ -11,6 +11,12 @@ use Teamleader\Entities\CRM\Tag;
 use Teamleader\Entities\Deal;
 use Teamleader\Entities\DealPhase;
 use Teamleader\Entities\DealSource;
+use Teamleader\Entities\General\Department;
+use Teamleader\Entities\Invoicing\CreditNote;
+use Teamleader\Entities\Invoicing\Invoice;
+use Teamleader\Entities\Invoicing\PaymentTerm;
+use Teamleader\Entities\Invoicing\TaxRate;
+use Teamleader\Entities\Invoicing\WithholdingTaxRate;
 use Teamleader\Entities\Webhook;
 use Teamleader\Entities\Migrate;
 
@@ -72,6 +78,30 @@ class Client {
     }
   
     public function event( $attributes = [] ) {
-        return new Event( $this->connection, $attributes );
+        return new Event($this->connection, $attributes);
+    }
+
+    public function invoice( $attributes = [] ) {
+        return new Invoice( $this->connection, $attributes );
+    }
+
+    public function creditNote( $attributes = [] ) {
+        return new CreditNote( $this->connection, $attributes );
+    }
+
+    public function taxRate( $attributes = [] ) {
+        return new TaxRate( $this->connection, $attributes );
+    }
+
+    public function paymentTerm( $attributes = [] ) {
+        return new PaymentTerm( $this->connection, $attributes );
+    }
+
+    public function withholdingTaxRate( $attributes = [] ) {
+        return new WithholdingTaxRate( $this->connection, $attributes );
+    }
+
+    public function department( $attributes = [] ) {
+        return new Department( $this->connection, $attributes );
     }
 }
