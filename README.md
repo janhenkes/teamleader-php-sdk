@@ -5,12 +5,21 @@ Please note that the Teamleader API v2 is not complete and some Entities and Act
 
 Currently we only support a few entities and per entity only a few actions:
 
-1. Company (create and update)
-2. Contact (create, update, linkToCompany)
-3. Deal (create and update)
-4. Deal phases (get)
-5. Deal sources (get)
-6. Activity types (get)
+1.  Company (create and update)
+2.  Contact (create, update, linkToCompany)
+3.  Deal (create and update)
+4.  Deal phases (get)
+5.  Deal sources (get)
+6.  Activity types (get)
+7.  Event (create, update, delete, get, getById)
+8.  Business types (get)
+9.  Tags (get)
+10. Invoice (get)
+11. Credit notes (get)
+12. Payment terms (get)
+13. Tax rates (get)
+14. Withholding tax rates (get)
+15. Departments (get)
 
 Teamleader API v2 works with OAuth2. This means your application needs to be registered on the [Teamleader Marketplace](https://marketplace.teamleader.eu/nl/nl/ontwikkel/integraties) (you can keep them private though).
 
