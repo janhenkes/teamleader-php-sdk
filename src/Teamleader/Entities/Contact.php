@@ -8,22 +8,24 @@
 
 namespace Teamleader\Entities;
 
+use Teamleader\Actions\FindAll;
 use Teamleader\Actions\Storable;
 use Teamleader\Exceptions\ApiException;
 use Teamleader\Model;
 
 class Contact extends Model {
     use Storable;
+    use FindAll;
 
     protected $fillable = [
         'id',
         'first_name',
         'last_name',
-        'emails',
         'salutation',
-        'telephones',
+        'emails', // { "type": "", "email" : "" }
+        'telephones', // { "type": "", "number" : "" }
         'website',
-        'addresses',
+        'addresses', // { "type": "", "address" : "" }
         'language',
         'gender',
         'birthdate',
