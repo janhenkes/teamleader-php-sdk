@@ -2,6 +2,9 @@ language: php
 matrix:
   include:
     - php: 7.1
+    - php: 7.2
+    - php: 7.3
+    - php: nightly
 
 before_script:
   - curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer
