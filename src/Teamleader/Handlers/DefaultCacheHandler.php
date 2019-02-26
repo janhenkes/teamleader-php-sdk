@@ -8,29 +8,34 @@
 
 namespace Teamleader\Handlers;
 
-class DefaultCacheHandler implements CacheHandlerInterface {
-    public function get( $key ) {
-        $file   = $this->getFileName( $key );
-        $handle = fopen( $file, 'r' );
-        $data   = fread( $handle, filesize( $file ) );
+class DefaultCacheHandler implements CacheHandlerInterface
+{
+    public function get($key)
+    {
+        $file   = $this->getFileName($key);
+        $handle = fopen($file, 'r');
+        $data   = fread($handle, filesize($file));
 
-        return $this->maybe_unserialize( $data );
+        return $this->maybe_unserialize($data);
     }
 
-    public function set( $key, $value, $expiresAt ) {
-        $my_file = $this->getFileName( $key );
-        $handle  = fopen( $my_file, 'w' );
-        fwrite( $handle, $this->maybe_serialize( $value ) );
+    public function set($key, $value, $expiresAt)
+    {
+        $my_file = $this->getFileName($key);
+        $handle  = fopen($my_file, 'w');
+        fwrite($handle, $this->maybe_serialize($value));
     }
 
-    public function forget( $key ) {
-        unlink( $this->getFileName( $key ) );
+    public function forget($key)
+    {
+        unlink($this->getFileName($key));
     }
 
-    private function getFileName( $key ) {
-        $filename = sys_get_temp_dir() . '/' . md5( $key );
-        if ( ! file_exists( $filename ) ) {
-            fopen( $filename, 'w' );
+    private function getFileName($key)
+    {
+        $filename = sys_get_temp_dir() . '/' . md5($key);
+        if (! file_exists($filename)) {
+            fopen($filename, 'w');
         }
 
         return $filename;
@@ -45,10 +50,10 @@ class DefaultCacheHandler implements CacheHandlerInterface {
      *
      * @return mixed Unserialized data can be any type.
      */
-    private function maybe_unserialize( $original ) {
-        if ( $this->is_serialized( $original ) ) // don't attempt to unserialize data that wasn't serialized going in
-        {
-            return @unserialize( $original );
+    private function maybe_unserialize($original)
+    {
+        if ($this->is_serialized($original)) { // don't attempt to unserialize data that wasn't serialized going in
+            return @unserialize($original);
         }
 
         return $original;
@@ -67,61 +72,63 @@ class DefaultCacheHandler implements CacheHandlerInterface {
      *
      * @return bool False if not serialized and true if it was.
      */
-    private function is_serialized( $data, $strict = true ) {
+    private function is_serialized($data, $strict = true)
+    {
         // if it isn't a string, it isn't serialized.
-        if ( ! is_string( $data ) ) {
+        if (! is_string($data)) {
             return false;
         }
-        $data = trim( $data );
-        if ( 'N;' == $data ) {
+        $data = trim($data);
+        if ('N;' == $data) {
             return true;
         }
-        if ( strlen( $data ) < 4 ) {
+        if (strlen($data) < 4) {
             return false;
         }
-        if ( ':' !== $data[1] ) {
+        if (':' !== $data[1]) {
             return false;
         }
-        if ( $strict ) {
-            $lastc = substr( $data, - 1 );
-            if ( ';' !== $lastc && '}' !== $lastc ) {
+        if ($strict) {
+            $lastc = substr($data, - 1);
+            if (';' !== $lastc && '}' !== $lastc) {
                 return false;
             }
         } else {
-            $semicolon = strpos( $data, ';' );
-            $brace     = strpos( $data, '}' );
+            $semicolon = strpos($data, ';');
+            $brace     = strpos($data, '}');
             // Either ; or } must exist.
-            if ( false === $semicolon && false === $brace ) {
+            if (false === $semicolon && false === $brace) {
                 return false;
             }
             // But neither must be in the first X characters.
-            if ( false !== $semicolon && $semicolon < 3 ) {
+            if (false !== $semicolon && $semicolon < 3) {
                 return false;
             }
-            if ( false !== $brace && $brace < 4 ) {
+            if (false !== $brace && $brace < 4) {
                 return false;
             }
         }
         $token = $data[0];
-        switch ( $token ) {
-            case 's' :
-                if ( $strict ) {
-                    if ( '"' !== substr( $data, - 2, 1 ) ) {
+        switch ($token) {
+            case 's':
+                if ($strict) {
+                    if ('"' !== substr($data, - 2, 1)) {
                         return false;
                     }
-                } else if ( false === strpos( $data, '"' ) ) {
+                } elseif (false === strpos($data, '"')) {
                     return false;
                 }
             // or else fall through
-            case 'a' :
-            case 'O' :
-                return (bool) preg_match( "/^{$token}:[0-9]+:/s", $data );
-            case 'b' :
-            case 'i' :
-            case 'd' :
+            // no break
+            case 'a':
+            case 'O':
+                return (bool) preg_match("/^{$token}:[0-9]+:/s", $data);
+            case 'b':
+            case 'i':
+            case 'd':
                 $end = $strict ? '$' : '';
 
-                return (bool) preg_match( "/^{$token}:[0-9.E-]+;$end/", $data );
+                return (bool) preg_match("/^{$token}:[0-9.E-]+;$end/", $data);
         }
 
         return false;
@@ -136,21 +143,22 @@ class DefaultCacheHandler implements CacheHandlerInterface {
      *
      * @return bool False if not a serialized string, true if it is.
      */
-    private function is_serialized_string( $data ) {
+    private function is_serialized_string($data)
+    {
         // if it isn't a string, it isn't a serialized string.
-        if ( ! is_string( $data ) ) {
+        if (! is_string($data)) {
             return false;
         }
-        $data = trim( $data );
-        if ( strlen( $data ) < 4 ) {
+        $data = trim($data);
+        if (strlen($data) < 4) {
             return false;
-        } else if ( ':' !== $data[1] ) {
+        } elseif (':' !== $data[1]) {
             return false;
-        } else if ( ';' !== substr( $data, - 1 ) ) {
+        } elseif (';' !== substr($data, - 1)) {
             return false;
-        } else if ( $data[0] !== 's' ) {
+        } elseif ($data[0] !== 's') {
             return false;
-        } else if ( '"' !== substr( $data, - 2, 1 ) ) {
+        } elseif ('"' !== substr($data, - 2, 1)) {
             return false;
         } else {
             return true;
@@ -166,16 +174,17 @@ class DefaultCacheHandler implements CacheHandlerInterface {
      *
      * @return mixed A scalar data
      */
-    private function maybe_serialize( $data ) {
-        if ( is_array( $data ) || is_object( $data ) ) {
-            return serialize( $data );
+    private function maybe_serialize($data)
+    {
+        if (is_array($data) || is_object($data)) {
+            return serialize($data);
         }
 
         // Double serialization is required for backward compatibility.
         // See https://core.trac.wordpress.org/ticket/12930
         // Also the world will end. See WP 3.6.1.
-        if ( $this->is_serialized( $data, false ) ) {
-            return serialize( $data );
+        if ($this->is_serialized($data, false)) {
+            return serialize($data);
         }
 
         return $data;

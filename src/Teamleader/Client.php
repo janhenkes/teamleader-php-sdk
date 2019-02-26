@@ -20,7 +20,8 @@ use Teamleader\Entities\Invoicing\WithholdingTaxRate;
 use Teamleader\Entities\Webhook;
 use Teamleader\Entities\Migrate;
 
-class Client {
+class Client
+{
     /**
      * The HTTP connection
      *
@@ -33,75 +34,93 @@ class Client {
      *
      * @param Connection $connection
      */
-    public function __construct( Connection $connection ) {
+    public function __construct(Connection $connection)
+    {
         $this->connection = $connection;
     }
 
-    public function company( $attributes = [] ) {
-        return new Company( $this->connection, $attributes );
+    public function company($attributes = [])
+    {
+        return new Company($this->connection, $attributes);
     }
 
-    public function contact( $attributes = [] ) {
-        return new Contact( $this->connection, $attributes );
+    public function contact($attributes = [])
+    {
+        return new Contact($this->connection, $attributes);
     }
 
-    public function deal( $attributes = [] ) {
-        return new Deal( $this->connection, $attributes );
+    public function deal($attributes = [])
+    {
+        return new Deal($this->connection, $attributes);
     }
 
-    public function dealPhase( $attributes = [] ) {
-        return new DealPhase( $this->connection, $attributes );
+    public function dealPhase($attributes = [])
+    {
+        return new DealPhase($this->connection, $attributes);
     }
 
-    public function dealSource( $attributes = [] ) {
-        return new DealSource( $this->connection, $attributes );
+    public function dealSource($attributes = [])
+    {
+        return new DealSource($this->connection, $attributes);
     }
 
-    public function webhook( $attributes = [] ) {
-        return new Webhook( $this->connection, $attributes );
+    public function webhook($attributes = [])
+    {
+        return new Webhook($this->connection, $attributes);
     }
 
-    public function migrate( $attributes = [] ) {
-        return new Migrate( $this->connection, $attributes );
+    public function migrate($attributes = [])
+    {
+        return new Migrate($this->connection, $attributes);
     }
 
-    public function activityType( $attributes = [] ) {
-        return new ActivityType( $this->connection, $attributes );
+    public function activityType($attributes = [])
+    {
+        return new ActivityType($this->connection, $attributes);
     }
 
-    public function businessType( $attributes = [] ) {
-        return new BusinessType( $this->connection, $attributes );
+    public function businessType($attributes = [])
+    {
+        return new BusinessType($this->connection, $attributes);
     }
     
-    public function tag( $attributes = [] ) {
-        return new Tag( $this->connection, $attributes );
+    public function tag($attributes = [])
+    {
+        return new Tag($this->connection, $attributes);
     }
-  
-    public function event( $attributes = [] ) {
+
+    public function event($attributes = [])
+    {
         return new Event($this->connection, $attributes);
     }
 
-    public function invoice( $attributes = [] ) {
-        return new Invoice( $this->connection, $attributes );
+    public function invoice($attributes = [])
+    {
+        return new Invoice($this->connection, $attributes);
     }
 
-    public function creditNote( $attributes = [] ) {
-        return new CreditNote( $this->connection, $attributes );
+    public function creditNote($attributes = [])
+    {
+        return new CreditNote($this->connection, $attributes);
     }
 
-    public function taxRate( $attributes = [] ) {
-        return new TaxRate( $this->connection, $attributes );
+    public function taxRate($attributes = [])
+    {
+        return new TaxRate($this->connection, $attributes);
     }
 
-    public function paymentTerm( $attributes = [] ) {
-        return new PaymentTerm( $this->connection, $attributes );
+    public function paymentTerm($attributes = [])
+    {
+        return new PaymentTerm($this->connection, $attributes);
     }
 
-    public function withholdingTaxRate( $attributes = [] ) {
-        return new WithholdingTaxRate( $this->connection, $attributes );
+    public function withholdingTaxRate($attributes = [])
+    {
+        return new WithholdingTaxRate($this->connection, $attributes);
     }
 
-    public function department( $attributes = [] ) {
-        return new Department( $this->connection, $attributes );
+    public function department($attributes = [])
+    {
+        return new Department($this->connection, $attributes);
     }
 }
