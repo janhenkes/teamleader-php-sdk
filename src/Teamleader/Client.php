@@ -15,6 +15,7 @@ use Teamleader\Entities\Invoicing\CreditNote;
 use Teamleader\Entities\Invoicing\Invoice;
 use Teamleader\Entities\Invoicing\PaymentTerm;
 use Teamleader\Entities\Invoicing\TaxRate;
+use Teamleader\Entities\Invoicing\WithholdingTaxRate;
 use Teamleader\Entities\Webhook;
 use Teamleader\Entities\Migrate;
 
@@ -93,5 +94,9 @@ class Client {
 
     public function paymentTerm( $attributes = [] ) {
         return new PaymentTerm( $this->connection, $attributes );
+    }
+
+    public function withholdingTaxRate( $attributes = [] ) {
+        return new WithholdingTaxRate( $this->connection, $attributes );
     }
 }
