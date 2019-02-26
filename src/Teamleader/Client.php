@@ -13,6 +13,7 @@ use Teamleader\Entities\DealPhase;
 use Teamleader\Entities\DealSource;
 use Teamleader\Entities\Invoicing\CreditNote;
 use Teamleader\Entities\Invoicing\Invoice;
+use Teamleader\Entities\Invoicing\PaymentTerm;
 use Teamleader\Entities\Invoicing\TaxRate;
 use Teamleader\Entities\Webhook;
 use Teamleader\Entities\Migrate;
@@ -88,5 +89,9 @@ class Client {
 
     public function taxRate( $attributes = [] ) {
         return new TaxRate( $this->connection, $attributes );
+    }
+
+    public function paymentTerm( $attributes = [] ) {
+        return new PaymentTerm( $this->connection, $attributes );
     }
 }
