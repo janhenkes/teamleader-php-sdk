@@ -4,8 +4,8 @@
  * Class Model
  * @package Teamleader
  */
-abstract class Model {
-
+abstract class Model
+{
     const NESTING_TYPE_ARRAY_OF_OBJECTS = 0;
     const NESTING_TYPE_NESTED_OBJECTS = 1;
 
@@ -61,9 +61,10 @@ abstract class Model {
      * @param Connection $connection
      * @param array      $attributes
      */
-    public function __construct( Connection $connection, array $attributes = [] ) {
+    public function __construct(Connection $connection, array $attributes = [])
+    {
         $this->connection = $connection;
-        $this->fill( $attributes );
+        $this->fill($attributes);
     }
 
     /**
@@ -71,7 +72,8 @@ abstract class Model {
      *
      * @return Connection
      */
-    public function connection() {
+    public function connection()
+    {
         return $this->connection;
     }
 
@@ -80,7 +82,8 @@ abstract class Model {
      *
      * @return array
      */
-    public function attributes() {
+    public function attributes()
+    {
         return $this->attributes;
     }
 
@@ -89,10 +92,11 @@ abstract class Model {
      *
      * @param array $attributes
      */
-    protected function fill( array $attributes ) {
-        foreach ( $this->fillableFromArray( $attributes ) as $key => $value ) {
-            if ( $this->isFillable( $key ) ) {
-                $this->setAttribute( $key, $value );
+    protected function fill(array $attributes)
+    {
+        foreach ($this->fillableFromArray($attributes) as $key => $value) {
+            if ($this->isFillable($key)) {
+                $this->setAttribute($key, $value);
             }
         }
     }
@@ -104,9 +108,10 @@ abstract class Model {
      *
      * @return array
      */
-    protected function fillableFromArray( array $attributes ) {
-        if ( count( $this->fillable ) > 0 ) {
-            return array_intersect_key( $attributes, array_flip( $this->fillable ) );
+    protected function fillableFromArray(array $attributes)
+    {
+        if (count($this->fillable) > 0) {
+            return array_intersect_key($attributes, array_flip($this->fillable));
         }
 
         return $attributes;
@@ -117,15 +122,17 @@ abstract class Model {
      *
      * @return bool
      */
-    protected function isFillable( $key ) {
-        return in_array( $key, $this->fillable );
+    protected function isFillable($key)
+    {
+        return in_array($key, $this->fillable);
     }
 
     /**
      * @param $key
      * @param $value
      */
-    protected function setAttribute( $key, $value ) {
+    protected function setAttribute($key, $value)
+    {
         $this->attributes[ $key ] = $value;
     }
 
@@ -134,8 +141,9 @@ abstract class Model {
      *
      * @return mixed
      */
-    public function __get( $key ) {
-        if ( isset( $this->attributes[ $key ] ) ) {
+    public function __get($key)
+    {
+        if (isset($this->attributes[ $key ])) {
             return $this->attributes[ $key ];
         }
     }
@@ -144,75 +152,80 @@ abstract class Model {
      * @param $key
      * @param $value
      */
-    public function __set( $key, $value ) {
-        if ( $this->isFillable( $key ) ) {
-            return $this->setAttribute( $key, $value );
+    public function __set($key, $value)
+    {
+        if ($this->isFillable($key)) {
+            return $this->setAttribute($key, $value);
         }
     }
 
     /**
      * @return bool
      */
-    public function exists() {
-        if ( ! array_key_exists( $this->primaryKey, $this->attributes ) ) {
+    public function exists()
+    {
+        if (! array_key_exists($this->primaryKey, $this->attributes)) {
             return false;
         }
 
-        return ! empty( $this->attributes[ $this->primaryKey ] );
+        return ! empty($this->attributes[ $this->primaryKey ]);
     }
 
     /**
      * @return string
      */
-    public function json() {
+    public function json()
+    {
         $array = $this->getArrayWithNestedObjects();
 
-        return json_encode( $array, JSON_FORCE_OBJECT );
+        return json_encode($array, JSON_FORCE_OBJECT);
     }
 
     /**
      * @return string
      */
-    public function jsonWithNamespace() {
-        if ( $this->namespace !== '' ) {
-            return json_encode( [ $this->namespace => $this->getArrayWithNestedObjects() ], JSON_FORCE_OBJECT );
+    public function jsonWithNamespace()
+    {
+        if ($this->namespace !== '') {
+            return json_encode([ $this->namespace => $this->getArrayWithNestedObjects() ], JSON_FORCE_OBJECT);
         } else {
             return $this->json();
         }
     }
 
-    private function getArrayWithNestedObjects( $useAttributesAppend = true ) {
+    private function getArrayWithNestedObjects($useAttributesAppend = true)
+    {
         $result                 = [];
         $multipleNestedEntities = $this->getMultipleNestedEntities();
 
-        foreach ( $this->attributes as $attributeName => $attributeValue ) {
-            if ( ! is_object( $attributeValue ) ) {
+        foreach ($this->attributes as $attributeName => $attributeValue) {
+            if (! is_object($attributeValue)) {
                 $result[ $attributeName ] = $attributeValue;
             }
 
-            if ( array_key_exists( $attributeName, $this->getSingleNestedEntities() ) ) {
+            if (array_key_exists($attributeName, $this->getSingleNestedEntities())) {
                 $result[ $attributeName ] = $attributeValue->attributes;
             }
 
-            if ( array_key_exists( $attributeName, $multipleNestedEntities ) ) {
-                if ( $useAttributesAppend ) {
+            if (array_key_exists($attributeName, $multipleNestedEntities)) {
+                if ($useAttributesAppend) {
                     $attributeNameToUse = $attributeName . '_attributes';
                 } else {
                     $attributeNameToUse = $attributeName;
                 }
 
                 $result[ $attributeNameToUse ] = [];
-                foreach ( $attributeValue as $attributeEntity ) {
+                foreach ($attributeValue as $attributeEntity) {
                     $result[ $attributeNameToUse ][] = $attributeEntity->attributes;
 
-                    if ( $multipleNestedEntities[ $attributeName ]['type'] === self::NESTING_TYPE_NESTED_OBJECTS ) {
+                    if ($multipleNestedEntities[ $attributeName ]['type'] === self::NESTING_TYPE_NESTED_OBJECTS) {
                         $result[ $attributeNameToUse ] = (object) $result[ $attributeNameToUse ];
                     }
                 }
 
                 if (
                     $multipleNestedEntities[ $attributeName ]['type'] === self::NESTING_TYPE_NESTED_OBJECTS
-                    && empty( $result[ $attributeNameToUse ] )
+                    && empty($result[ $attributeNameToUse ])
                 ) {
                     $result[ $attributeNameToUse ] = new \StdClass();
                 }
@@ -229,9 +242,10 @@ abstract class Model {
      *
      * @return static
      */
-    public function makeFromResponse( $response ) {
-        $entity = new static( $this->connection );
-        $entity->selfFromResponse( $response );
+    public function makeFromResponse($response)
+    {
+        $entity = new static($this->connection);
+        $entity->selfFromResponse($response);
 
         return $entity;
     }
@@ -243,25 +257,26 @@ abstract class Model {
      *
      * @return $this
      */
-    public function selfFromResponse( $response ) {
-        if ( isset( $response['data'] ) ) {
+    public function selfFromResponse($response)
+    {
+        if (isset($response['data'])) {
             $response = $response['data'];
         }
 
-        $this->fill( $response );
+        $this->fill($response);
 
-        foreach ( $this->getSingleNestedEntities() as $key => $value ) {
-            if ( isset( $response[ $key ] ) ) {
+        foreach ($this->getSingleNestedEntities() as $key => $value) {
+            if (isset($response[ $key ])) {
                 $entityName = 'Teamleader\Entities\\' . $value;
-                $this->$key = new $entityName( $this->connection, $response[ $key ] );
+                $this->$key = new $entityName($this->connection, $response[ $key ]);
             }
         }
 
-        foreach ( $this->getMultipleNestedEntities() as $key => $value ) {
-            if ( isset( $response[ $key ] ) ) {
+        foreach ($this->getMultipleNestedEntities() as $key => $value) {
+            if (isset($response[ $key ])) {
                 $entityName        = 'Teamleader\Entities\\' . $value['entity'];
-                $instaniatedEntity = new $entityName( $this->connection );
-                $this->$key        = $instaniatedEntity->collectionFromResult( $response[ $key ] );
+                $instaniatedEntity = new $entityName($this->connection);
+                $this->$key        = $instaniatedEntity->collectionFromResult($response[ $key ]);
             }
         }
 
@@ -273,24 +288,25 @@ abstract class Model {
      *
      * @return array
      */
-    public function collectionFromResult( $result ) {
+    public function collectionFromResult($result)
+    {
         if (!$result) {
             return [];
         }
 
-        if ( isset( $result['data'] ) ) {
+        if (isset($result['data'])) {
             $result = $result['data'];
         }
 
         // If we have one result which is not an assoc array, make it the first element of an array for the
         // collectionFromResult function so we always return a collection from filter
-        if ( (bool) count( array_filter( array_keys( $result ), 'is_string' ) ) ) {
+        if ((bool) count(array_filter(array_keys($result), 'is_string'))) {
             $result = [ $result ];
         }
 
         $collection = [];
-        foreach ( $result as $r ) {
-            $collection[] = static::makeFromResponse( $r );
+        foreach ($result as $r) {
+            $collection[] = static::makeFromResponse($r);
         }
 
         return $collection;
@@ -299,14 +315,16 @@ abstract class Model {
     /**
      * @return mixed
      */
-    public function getSingleNestedEntities() {
+    public function getSingleNestedEntities()
+    {
         return $this->singleNestedEntities;
     }
 
     /**
      * @return array
      */
-    public function getMultipleNestedEntities() {
+    public function getMultipleNestedEntities()
+    {
         return $this->multipleNestedEntities;
     }
 
@@ -315,9 +333,10 @@ abstract class Model {
      *
      * @return array
      */
-    public function __debugInfo() {
+    public function __debugInfo()
+    {
         $result = [];
-        foreach ( $this->fillable as $attribute ) {
+        foreach ($this->fillable as $attribute) {
             $result[ $attribute ] = $this->$attribute;
         }
 
@@ -327,7 +346,8 @@ abstract class Model {
     /**
      * @return string
      */
-    public function getEndpoint() {
+    public function getEndpoint()
+    {
         return $this->endpoint;
     }
 
@@ -338,8 +358,8 @@ abstract class Model {
      *
      * @return bool
      */
-    public function __isset( $name ) {
-        return ( isset( $this->attributes[ $name ] ) && ! is_null( $this->attributes[ $name ] ) );
+    public function __isset($name)
+    {
+        return (isset($this->attributes[ $name ]) && ! is_null($this->attributes[ $name ]));
     }
-
 }

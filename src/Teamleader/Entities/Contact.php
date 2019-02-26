@@ -8,7 +8,6 @@ use Teamleader\Model;
 
 class Contact extends Model
 {
-    use FindAll;
     use Storable;
     use FindAll;
 
@@ -51,7 +50,7 @@ class Contact extends Model
     ) {
         $arguments['id'] = $this->attributes['id'];
 
-        $result = $this->connection()->post( $this->getEndpoint() . '.linkToCompany', json_encode( $arguments, JSON_FORCE_OBJECT ) );
+        $result = $this->connection()->post($this->getEndpoint() . '.linkToCompany', json_encode($arguments, JSON_FORCE_OBJECT));
 
         return $result;
     }

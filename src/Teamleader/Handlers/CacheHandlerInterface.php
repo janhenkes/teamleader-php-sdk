@@ -8,10 +8,11 @@
 
 namespace Teamleader\Handlers;
 
-interface CacheHandlerInterface {
-    public function set( $key, $value, $expireInMinutes );
+interface CacheHandlerInterface
+{
+    public function set($key, $value, $expireInMinutes);
 
-    public function get( $key );
+    public function get($key);
 
-    public function forget( $key );
+    public function forget($key);
 }

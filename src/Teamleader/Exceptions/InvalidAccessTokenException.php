@@ -8,6 +8,6 @@
 
 namespace Teamleader\Exceptions;
 
-class InvalidAccessTokenException extends \Exception {
-
+class InvalidAccessTokenException extends \Exception
+{
 }

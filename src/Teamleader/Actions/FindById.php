@@ -15,10 +15,10 @@ trait FindById
     {
         $result = $this->connection()->post($this->getEndpoint() . '.info', $this->jsonWithNamespace());
 
-        if ( $result === 200 ) {
+        if ($result === 200) {
             return true;
         }
 
-        return $this->selfFromResponse( $result );
+        return $this->selfFromResponse($result);
     }
 }

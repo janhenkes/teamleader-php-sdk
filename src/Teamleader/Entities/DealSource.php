@@ -5,7 +5,8 @@ namespace Teamleader\Entities;
 use Teamleader\Actions\FindAll;
 use Teamleader\Model;
 
-class DealSource extends Model {
+class DealSource extends Model
+{
     use FindAll;
 
     protected $fillable = [

@@ -5,7 +5,8 @@ namespace Teamleader\Entities;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
 
-class Deal extends Model {
+class Deal extends Model
+{
     use Storable;
 
     protected $fillable = [
@@ -30,19 +31,21 @@ class Deal extends Model {
     /**
      * @return mixed
      */
-    public function insert() {
-        $result = $this->connection()->post( $this->getEndpoint() . '.create', $this->jsonWithNamespace() );
+    public function insert()
+    {
+        $result = $this->connection()->post($this->getEndpoint() . '.create', $this->jsonWithNamespace());
 
-        return $this->selfFromResponse( $result );
+        return $this->selfFromResponse($result);
     }
 
-    public function move( $phaseId ) {
+    public function move($phaseId)
+    {
         $arguments = [
             'id'       => $this->attributes['id'],
             'phase_id' => $phaseId,
         ];
 
-        $result = $this->connection()->post( $this->getEndpoint() . '.move', json_encode( $arguments, JSON_FORCE_OBJECT ) );
+        $result = $this->connection()->post($this->getEndpoint() . '.move', json_encode($arguments, JSON_FORCE_OBJECT));
 
         return $result;
     }

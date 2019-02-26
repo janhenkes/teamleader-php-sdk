@@ -1,0 +1,21 @@
+language: php
+matrix:
+  include:
+    - php: 7.1
+    - php: 7.2
+    - php: 7.3
+
+before_script:
+  - curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer
+  - chmod a+x php-cs-fixer
+  - composer install
+
+script:
+  - ./php-cs-fixer fix src --rules=@PSR2 --dry-run --diff
+  - travis_wait 30 ./vendor/bin/phpunit --bootstrap vendor/autoload.php Tests --coverage-clover=coverage.clover
+
+after_success:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+
+sudo: false
