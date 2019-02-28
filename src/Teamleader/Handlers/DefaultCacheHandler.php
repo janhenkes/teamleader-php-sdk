@@ -12,11 +12,14 @@ class DefaultCacheHandler implements CacheHandlerInterface
 {
     public function get($key)
     {
-        $file   = $this->getFileName($key);
+        $file = $this->getFileName($key);
         $handle = fopen($file, 'r');
-        $data   = fread($handle, filesize($file));
+        $fileSize = filesize($file);
+        if ($fileSize === 0) {
+            return null;
+        }
 
-        return $this->maybe_unserialize($data);
+        return $this->maybe_unserialize(fread($handle, $fileSize));
     }
 
     public function set($key, $value, $expiresAt)
