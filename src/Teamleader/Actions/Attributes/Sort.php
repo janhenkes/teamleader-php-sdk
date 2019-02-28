@@ -2,7 +2,9 @@
 
 namespace Teamleader\Actions\Attributes;
 
-class Sort
+use JsonSerializable;
+
+class Sort implements JsonSerializable
 {
     public const DIRECTION_ASC = 'asc';
     public const DIRECTION_DESC = 'desc';
@@ -57,5 +59,10 @@ class Sort
     protected function isValidDirection(string $direction): bool
     {
         return in_array($direction, self::POSSIBLE_DIRECTIONS);
+    }
+
+    final public function jsonSerialize(): array
+    {
+        return $this->getSorts();
     }
 }

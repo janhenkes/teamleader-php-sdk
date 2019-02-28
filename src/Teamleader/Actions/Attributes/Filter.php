@@ -2,7 +2,9 @@
 
 namespace Teamleader\Actions\Attributes;
 
-class Filter
+use JsonSerializable;
+
+class Filter implements JsonSerializable
 {
     /**
      * These can be overwitten in filters specific for a certain entity to aid with validation
@@ -49,5 +51,10 @@ class Filter
         }
 
         return true;
+    }
+
+    final public function jsonSerialize(): array
+    {
+        return $this->getFilters();
     }
 }

@@ -2,7 +2,9 @@
 
 namespace Teamleader\Actions\Attributes;
 
-final class Page
+use JsonSerializable;
+
+final class Page implements JsonSerializable
 {
     private const DEFAULT_SIZE = 20;
     private const DEFAULT_NUMBER = 1;
@@ -28,5 +30,18 @@ final class Page
     public function getNumber(): int
     {
         return $this->number;
+    }
+
+    public function getPage(): array
+    {
+        return [
+            'size' => $this->size,
+            'number' => $this->number,
+        ];
+    }
+
+    final public function jsonSerialize(): array
+    {
+        return $this->getPage();
     }
 }
