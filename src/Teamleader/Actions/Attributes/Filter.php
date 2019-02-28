@@ -16,7 +16,7 @@ class Filter implements JsonSerializable
     /**
      * @var array
      */
-    protected $filters;
+    protected $filters = [];
 
     public function __construct(array $filters = [])
     {

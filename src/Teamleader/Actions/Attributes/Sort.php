@@ -23,7 +23,7 @@ class Sort implements JsonSerializable
     /**
      * @var array
      */
-    protected $sorts;
+    protected $sorts = [];
 
     public function __construct(array $sorts = [])
     {
@@ -53,7 +53,11 @@ class Sort implements JsonSerializable
 
     protected function isFillable(string $field): bool
     {
-        return in_array($field, $this->fillable);
+        if (count($this->fillable) > 0) {
+            return in_array($field, $this->fillable);
+        }
+
+        return true;
     }
 
     protected function isValidDirection(string $direction): bool
