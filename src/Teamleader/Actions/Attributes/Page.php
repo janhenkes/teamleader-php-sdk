@@ -8,7 +8,15 @@ final class Page implements JsonSerializable
 {
     private const DEFAULT_SIZE = 20;
     private const DEFAULT_NUMBER = 1;
+
+    /**
+     * @var int
+     */
     private $size;
+
+    /**
+     * @var int
+     */
     private $number;
 
     public function __construct(int $size = self::DEFAULT_SIZE, int $number = self::DEFAULT_NUMBER)
