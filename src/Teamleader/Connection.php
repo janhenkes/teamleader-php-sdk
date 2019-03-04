@@ -14,6 +14,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7;
+use Teamleader\Actions\Attributes\Page;
 use Teamleader\Exceptions\Api\TooManyRequestsException;
 use Teamleader\Exceptions\ApiException;
 use Psr\Http\Message\ResponseInterface;
@@ -309,7 +310,7 @@ class Connection
     }
 
     /**
-     * @param       $url
+     * @param string  $url
      * @param array $params
      * @param bool  $fetchAll
      *
@@ -319,18 +320,29 @@ class Connection
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws InvalidAccessTokenException
      */
-    public function get($url, array $params = [], $fetchAll = false)
+    public function get(string $url, array $params = [], bool $fetchAll = false)
     {
         try {
-            $request  = $this->createRequest('GET', $this->formatUrl($url, 'get'), null, $params);
+            if ($fetchAll && !array_keys($params, 'page')) {
+                $params['page'] = new Page(100);
+            }
+
+            $request  = $this->createRequest('GET', $this->formatUrl($url, 'get'), json_encode($params));
             $response = $this->client()->send($request);
 
             $json = $this->parseResponse($response);
 
-            if ($fetchAll === true) {
-                if (($nextParams = $this->getNextParams($response->getHeaderLine('Link')))) {
-                    $json = array_merge($json, $this->get($url, $nextParams, $fetchAll));
-                }
+            if (!$fetchAll) {
+                return $json;
+            }
+
+            if ($this->hasMoreData($json, $params['page'])) {
+                do {
+                    $params['page']->next();
+
+                    $nextPageJson = $this->get($url, $params);
+                    $json = array_merge_recursive($json, $nextPageJson);
+                } while ($this->hasMoreData($nextPageJson, $params['page']));
             }
 
             return $json;
@@ -339,25 +351,9 @@ class Connection
         }
     }
 
-    /**
-     * @param $headerLine
-     *
-     * @return bool | array
-     */
-    private function getNextParams($headerLine)
+    private function hasMoreData(array $json, Page $page): bool
     {
-        $links = Psr7\parse_header($headerLine);
-
-        foreach ($links as $link) {
-            if (isset($link['rel']) && $link['rel'] === 'next') {
-                $query = parse_url(trim($link[0], '<>'), PHP_URL_QUERY);
-                parse_str($query, $params);
-
-                return $params;
-            }
-        }
-
-        return false;
+        return count($json['data'] ?? []) === $page->getSize();
     }
 
     /**
