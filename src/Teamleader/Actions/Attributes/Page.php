@@ -35,6 +35,16 @@ final class Page implements JsonSerializable
         return $this->size;
     }
 
+    public function next(): void
+    {
+        ++$this->number;
+    }
+
+    public function previous(): void
+    {
+        --$this->number;
+    }
+
     public function getNumber(): int
     {
         return $this->number;
