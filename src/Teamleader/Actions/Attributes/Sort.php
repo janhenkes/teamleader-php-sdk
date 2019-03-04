@@ -25,15 +25,34 @@ class Sort implements JsonSerializable
      */
     private $sorts;
 
-    public function __construct(array $sorts = [])
+    /**
+     * @var bool
+     * Some sorts only allow a single field to sort on (like calendar events)
+     * This is used for the different format that is needed in that case.
+     */
+    private $singleFieldSort;
+
+    /**
+     * @var $sorts An array containing the sorting parameters
+     * @var $singleFieldSort Some sorts only allow a single field to sort on (like calendar events)
+     */
+    public function __construct(array $sorts = [], bool $singleFieldSort = false)
     {
         $this->fill($sorts);
+        $this->singleFieldSort = $singleFieldSort;
     }
 
     public function addSort(string $field, string $order): self
     {
+        if ($this->singleFieldSort) {
+            throw new \LogicException('You can only sort on one item when singleFieldSort is active');
+        }
+
         if ($this->isFillable($field) && $this->isValidOrder($order)) {
-            $this->sorts[$field] = $order;
+            $this->sorts[] = [
+                'field' => $field,
+                'order' => $order,
+            ];
         }
 
         return $this;
@@ -67,6 +86,10 @@ class Sort implements JsonSerializable
 
     public function jsonSerialize(): array
     {
+        if ($this->singleFieldSort) {
+            return reset($this->sorts);
+        }
+
         return $this->getSorts();
     }
 }
