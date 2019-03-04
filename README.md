@@ -65,8 +65,6 @@ $dealPhases = $client->dealPhase()->get();
 
 # TODO
 
-- [ ] Fix the getAll() method in Actions/FindAll.php
-- [ ] Add Filter action
 - [ ] Support custom actions on Deals
 - [ ] Add all other Entities
 
