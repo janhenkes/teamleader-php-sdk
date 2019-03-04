@@ -322,7 +322,7 @@ class Connection
     public function get($url, array $params = [], $fetchAll = false)
     {
         try {
-            $request  = $this->createRequest('GET', $this->formatUrl($url, 'get'), null, $params);
+            $request  = $this->createRequest('GET', $this->formatUrl($url, 'get'), json_encode($params));
             $response = $this->client()->send($request);
 
             $json = $this->parseResponse($response);
