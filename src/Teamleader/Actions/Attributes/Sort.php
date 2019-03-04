@@ -6,11 +6,11 @@ use JsonSerializable;
 
 class Sort implements JsonSerializable
 {
-    public const DIRECTION_ASC = 'asc';
-    public const DIRECTION_DESC = 'desc';
-    private const POSSIBLE_DIRECTIONS = [
-        self::DIRECTION_ASC,
-        self::DIRECTION_DESC,
+    public const ORDER_ASC = 'asc';
+    public const ORDER_DESC = 'desc';
+    private const POSSIBLE_ORDERS = [
+        self::ORDER_ASC,
+        self::ORDER_DESC,
     ];
 
     /**
@@ -23,17 +23,17 @@ class Sort implements JsonSerializable
     /**
      * @var array
      */
-    protected $sorts = [];
+    private $sorts;
 
     public function __construct(array $sorts = [])
     {
         $this->fill($sorts);
     }
 
-    public function addSort(string $field, string $direction): self
+    public function addSort(string $field, string $order): self
     {
-        if ($this->isFillable($field) && $this->isValidDirection($direction)) {
-            $this->sorts[$field] = $direction;
+        if ($this->isFillable($field) && $this->isValidOrder($order)) {
+            $this->sorts[$field] = $order;
         }
 
         return $this;
@@ -46,8 +46,8 @@ class Sort implements JsonSerializable
 
     protected function fill(array $sorts): void
     {
-        foreach ($sorts as $field => $direction) {
-            $this->addSort($field, $direction);
+        foreach ($sorts as $field => $order) {
+            $this->addSort($field, $order);
         }
     }
 
@@ -60,12 +60,12 @@ class Sort implements JsonSerializable
         return true;
     }
 
-    protected function isValidDirection(string $direction): bool
+    protected function isValidOrder(string $order): bool
     {
-        return in_array($direction, self::POSSIBLE_DIRECTIONS);
+        return in_array($order, self::POSSIBLE_ORDERS);
     }
 
-    final public function jsonSerialize(): array
+    public function jsonSerialize(): array
     {
         return $this->getSorts();
     }
