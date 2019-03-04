@@ -19,13 +19,13 @@ final class Page implements JsonSerializable
      */
     private $number;
 
-    public function __construct(int $size = self::DEFAULT_SIZE, int $number = self::DEFAULT_NUMBER)
+    public function __construct(?int $size = self::DEFAULT_SIZE, ?int $number = self::DEFAULT_NUMBER)
     {
         $this->size = $this->isValidNumber($size) ? $size : self::DEFAULT_SIZE;
         $this->number = $this->isValidNumber($number) ? $number : self::DEFAULT_NUMBER;
     }
 
-    private function isValidNumber(int $number): bool
+    private function isValidNumber(?int $number): bool
     {
         return $number >= 1;
     }
