@@ -12,6 +12,7 @@ use Teamleader\Entities\Deal;
 use Teamleader\Entities\DealPhase;
 use Teamleader\Entities\DealSource;
 use Teamleader\Entities\General\Department;
+use Teamleader\Entities\General\User;
 use Teamleader\Entities\Invoicing\CreditNote;
 use Teamleader\Entities\Invoicing\Invoice;
 use Teamleader\Entities\Invoicing\PaymentTerm;
@@ -64,6 +65,11 @@ class Client
         return new DealSource($this->connection, $attributes);
     }
 
+    public function user($attributes = [])
+    {
+        return new User($this->connection, $attributes);
+    }
+
     public function webhook($attributes = [])
     {
         return new Webhook($this->connection, $attributes);
@@ -83,7 +89,7 @@ class Client
     {
         return new BusinessType($this->connection, $attributes);
     }
-    
+
     public function tag($attributes = [])
     {
         return new Tag($this->connection, $attributes);
