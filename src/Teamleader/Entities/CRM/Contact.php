@@ -5,11 +5,14 @@ namespace Teamleader\Entities\CRM;
 use Teamleader\Actions\FindAll;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
+use JsonSerializable;
 
-class Contact extends Model
+class Contact extends Model implements JsonSerializable
 {
     use Storable;
     use FindAll;
+
+    const TYPE = 'contact';
 
     protected $fillable = [
         'id',
@@ -53,5 +56,13 @@ class Contact extends Model
         $result = $this->connection()->post($this->getEndpoint() . '.linkToCompany', json_encode($arguments, JSON_FORCE_OBJECT));
 
         return $result;
+    }
+
+    public function jsonSerialize(): object
+    {
+        return (object) [
+            'type' => self::TYPE,
+            'id' => $this->id,
+        ];
     }
 }
