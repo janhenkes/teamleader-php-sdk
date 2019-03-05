@@ -202,7 +202,7 @@ abstract class Model implements JsonSerializable
      */
     public function __get(string $key)
     {
-        if (!$this->isLoaded) {
+        if (!$this->isLoaded && method_exists($this, 'findById')) {
             $this->findById();
         }
 
