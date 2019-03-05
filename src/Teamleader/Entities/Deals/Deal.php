@@ -53,7 +53,7 @@ class Deal extends Model implements JsonSerializable
         return $result;
     }
 
-    public function jsonSerialize(): object
+    public function jsonSerialize()
     {
         return (object) [
             'type' => self::TYPE,

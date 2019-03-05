@@ -33,7 +33,7 @@ class Invoice extends Model implements JsonSerializable
      */
     protected $endpoint = 'invoices';
 
-    public function jsonSerialize(): object
+    public function jsonSerialize()
     {
         return (object) [
             'type' => self::TYPE,
