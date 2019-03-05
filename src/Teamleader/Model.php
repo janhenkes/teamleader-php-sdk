@@ -74,6 +74,11 @@ abstract class Model implements JsonSerializable
     protected $multipleNestedEntities = [];
 
     /**
+     * @var bool
+     */
+    protected $isLoaded;
+
+    /**
      * Model constructor.
      *
      * @param Connection $connection
@@ -82,6 +87,7 @@ abstract class Model implements JsonSerializable
     public function __construct(Connection $connection, array $attributes = [])
     {
         $this->connection = $connection;
+        $this->isLoaded = !method_exists($this, 'findById');
         $this->fill($attributes);
     }
 
@@ -112,8 +118,16 @@ abstract class Model implements JsonSerializable
      */
     protected function fill(array $attributes): void
     {
-        foreach ($this->fillableFromArray($attributes) as $key => $value) {
-            $this->setAttribute($key, $value);
+        $attributes = $this->fillableFromArray($attributes);
+
+        foreach ($attributes as $key => $attribute) {
+            $this->setAttribute($key, $attribute);
+        }
+
+        if (!empty($attributes)) {
+            $loadedAttributes = $attributes;
+            unset($loadedAttributes[$this->primaryKey]);
+            $this->isLoaded = !empty($loadedAttributes);
         }
     }
 
@@ -188,6 +202,10 @@ abstract class Model implements JsonSerializable
      */
     public function __get(string $key)
     {
+        if (!$this->isLoaded) {
+            $this->findById();
+        }
+
         if (isset($this->attributes[$key])) {
             return $this->attributes[$key];
         }
