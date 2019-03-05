@@ -1,6 +1,6 @@
 <?php
 
-namespace Teamleader\Entities;
+namespace Teamleader\Entities\CRM;
 
 use Teamleader\Actions\FindAll;
 use Teamleader\Actions\Storable;
