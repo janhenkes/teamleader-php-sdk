@@ -5,7 +5,7 @@ namespace Teamleader;
 use Teamleader\Entities\Calendar\ActivityType;
 use Teamleader\Entities\Calendar\Event;
 use Teamleader\Entities\Company;
-use Teamleader\Entities\Contact;
+use Teamleader\Entities\CRM\Contact;
 use Teamleader\Entities\CRM\BusinessType;
 use Teamleader\Entities\CRM\Tag;
 use Teamleader\Entities\Deal;
