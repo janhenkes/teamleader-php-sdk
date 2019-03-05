@@ -5,9 +5,8 @@ namespace Teamleader\Entities\CRM;
 use Teamleader\Actions\FindAll;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
-use JsonSerializable;
 
-class Company extends Model implements JsonSerializable
+class Company extends Model
 {
     use FindAll;
     use Storable;
@@ -35,12 +34,4 @@ class Company extends Model implements JsonSerializable
      * @var string
      */
     protected $endpoint = 'companies';
-
-    public function jsonSerialize()
-    {
-        return (object) [
-            'type' => self::TYPE,
-            'id' => $this->id,
-        ];
-    }
 }

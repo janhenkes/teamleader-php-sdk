@@ -5,9 +5,8 @@ namespace Teamleader\Entities\CRM;
 use Teamleader\Actions\FindAll;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
-use JsonSerializable;
 
-class Contact extends Model implements JsonSerializable
+class Contact extends Model
 {
     use Storable;
     use FindAll;
@@ -56,13 +55,5 @@ class Contact extends Model implements JsonSerializable
         $result = $this->connection()->post($this->getEndpoint() . '.linkToCompany', json_encode($arguments, JSON_FORCE_OBJECT));
 
         return $result;
-    }
-
-    public function jsonSerialize()
-    {
-        return (object) [
-            'type' => self::TYPE,
-            'id' => $this->id,
-        ];
     }
 }

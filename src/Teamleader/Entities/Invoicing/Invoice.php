@@ -5,9 +5,8 @@ namespace Teamleader\Entities\Invoicing;
 use Teamleader\Actions\FindAll;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
-use JsonSerializable;
 
-class Invoice extends Model implements JsonSerializable
+class Invoice extends Model
 {
     use FindAll;
     use Storable;
@@ -32,12 +31,4 @@ class Invoice extends Model implements JsonSerializable
      * @var string
      */
     protected $endpoint = 'invoices';
-
-    public function jsonSerialize()
-    {
-        return (object) [
-            'type' => self::TYPE,
-            'id' => $this->id,
-        ];
-    }
 }

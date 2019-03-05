@@ -6,9 +6,8 @@ use Teamleader\Actions\FindAll;
 use Teamleader\Actions\FindById;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
-use JsonSerializable;
 
-class User extends Model implements JsonSerializable
+class User extends Model
 {
     use FindAll;
     use FindById;
@@ -41,13 +40,5 @@ class User extends Model implements JsonSerializable
         }
 
         return $this->selfFromResponse($result);
-    }
-
-    public function jsonSerialize()
-    {
-        return (object) [
-            'type' => self::TYPE,
-            'id' => $this->id,
-        ];
     }
 }

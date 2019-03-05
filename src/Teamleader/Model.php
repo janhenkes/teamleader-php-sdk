@@ -7,13 +7,14 @@ use Teamleader\Entities\CRM\Contact;
 use Teamleader\Entities\Deals\Deal;
 use Teamleader\Entities\General\User;
 use Teamleader\Entities\Invoicing\Invoice;
+use JsonSerializable;
 
 /**
  * Class Model
  *
  * @package Teamleader
  */
-abstract class Model
+abstract class Model implements JsonSerializable
 {
     const NESTING_TYPE_ARRAY_OF_OBJECTS = 0;
     const NESTING_TYPE_NESTED_OBJECTS = 1;
@@ -402,5 +403,19 @@ abstract class Model
     public function __isset(string $name): bool
     {
         return (isset($this->attributes[$name]) && !is_null($this->attributes[$name]));
+    }
+
+    public function jsonSerialize()
+    {
+        if (!defined('static::TYPE')) {
+            return $this->getArrayWithNestedObjects();
+        }
+
+        $primaryKey = $this->primaryKey;
+
+        return (object) [
+            'type' => static::TYPE,
+            $primaryKey => $this->$primaryKey,
+        ];
     }
 }

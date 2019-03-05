@@ -4,9 +4,8 @@ namespace Teamleader\Entities\Deals;
 
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
-use JsonSerializable;
 
-class Deal extends Model implements JsonSerializable
+class Deal extends Model
 {
     use Storable;
 
@@ -51,13 +50,5 @@ class Deal extends Model implements JsonSerializable
         $result = $this->connection()->post($this->getEndpoint() . '.move', json_encode($arguments, JSON_FORCE_OBJECT));
 
         return $result;
-    }
-
-    public function jsonSerialize()
-    {
-        return (object) [
-            'type' => self::TYPE,
-            'id' => $this->id,
-        ];
     }
 }
