@@ -1,4 +1,12 @@
-<?php namespace Teamleader;
+<?php
+
+namespace Teamleader;
+
+use Teamleader\Entities\CRM\Company;
+use Teamleader\Entities\CRM\Contact;
+use Teamleader\Entities\Deals\Deal;
+use Teamleader\Entities\General\User;
+use Teamleader\Entities\Invoicing\Invoice;
 
 /**
  * Class Model
@@ -9,6 +17,14 @@ abstract class Model
 {
     const NESTING_TYPE_ARRAY_OF_OBJECTS = 0;
     const NESTING_TYPE_NESTED_OBJECTS = 1;
+
+    protected $references = [
+        Contact::TYPE => Contact::class,
+        Company::TYPE => Company::class,
+        Deal::TYPE => Deal::class,
+        Invoice::TYPE => Invoice::class,
+        User::TYPE => User::class,
+    ];
 
     /**
      * @var Connection
@@ -133,8 +149,35 @@ abstract class Model
     protected function setAttribute(string $key, $value): void
     {
         if ($this->isFillable($key)) {
-            $this->attributes[$key] = $value;
+            $this->attributes[$key] = $this->addReferences($value);
         }
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return mixed
+     */
+    private function addReferences($data)
+    {
+        if (!is_array($data)) {
+            return $data;
+        }
+
+        if (count($data) === 2 && array_key_exists('type', $data) && array_key_exists('id', $data)) {
+            if (!array_key_exists($data['type'], $this->references)) {
+                return $data;
+            }
+
+            $class = $this->references[$data['type']];
+            return new $class($this->connection, ['id' => $data['id']]);
+        }
+
+        foreach ($data as $key => $value) {
+            $data[$key] = $this->addReferences($value);
+        }
+
+        return $data;
     }
 
     /**
