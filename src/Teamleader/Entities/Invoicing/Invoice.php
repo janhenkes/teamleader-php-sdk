@@ -14,6 +14,7 @@ class Invoice extends Model
     private $createAction = 'draft';
 
     protected $fillable = [
+        'id',
         'invoicee', // { "customer": { "type": "contact", "id" : "" }, "for_attention_of" : { "name": "" OR "contact_id" : "" } }
         'department_id',
         'payment_term', // { "type": "cash", "days" : "" }
