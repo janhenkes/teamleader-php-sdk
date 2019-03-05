@@ -18,8 +18,8 @@ use Teamleader\Entities\Invoicing\Invoice;
 use Teamleader\Entities\Invoicing\PaymentTerm;
 use Teamleader\Entities\Invoicing\TaxRate;
 use Teamleader\Entities\Invoicing\WithholdingTaxRate;
-use Teamleader\Entities\Webhook;
-use Teamleader\Entities\Migrate;
+use Teamleader\Entities\Other\Webhook;
+use Teamleader\Entities\Other\Migrate;
 
 class Client
 {
