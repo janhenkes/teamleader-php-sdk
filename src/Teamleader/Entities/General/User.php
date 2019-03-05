@@ -28,4 +28,15 @@ class User extends Model
      * @var string
      */
     protected $endpoint = 'users';
+
+    public function me()
+    {
+        $result = $this->connection()->post($this->getEndpoint() . '.me', $this->jsonWithNamespace());
+
+        if ($result === 200) {
+            return true;
+        }
+
+        return $this->selfFromResponse($result);
+    }
 }
