@@ -1,6 +1,6 @@
 <?php
 
-namespace Teamleader\Entities;
+namespace Teamleader\Entities\Deals;
 
 use Teamleader\Actions\Storable;
 use Teamleader\Model;

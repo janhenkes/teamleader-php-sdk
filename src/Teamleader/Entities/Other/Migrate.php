@@ -1,6 +1,6 @@
 <?php
 
-namespace Teamleader\Entities;
+namespace Teamleader\Entities\Other;
 
 use Teamleader\Model;
 

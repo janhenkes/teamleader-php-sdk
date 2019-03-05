@@ -1,11 +1,11 @@
 <?php
 
-namespace Teamleader\Entities;
+namespace Teamleader\Entities\Deals;
 
 use Teamleader\Actions\FindAll;
 use Teamleader\Model;
 
-class DealSource extends Model
+class DealPhase extends Model
 {
     use FindAll;
 
@@ -17,5 +17,5 @@ class DealSource extends Model
     /**
      * @var string
      */
-    protected $endpoint = 'dealSources';
+    protected $endpoint = 'dealPhases';
 }
