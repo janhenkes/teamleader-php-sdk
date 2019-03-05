@@ -5,8 +5,8 @@ Please note that the Teamleader API v2 is not complete and some Entities and Act
 
 Currently we only support a few entities and per entity only a few actions:
 
-1.  Company (create and update)
-2.  Contact (create, update, linkToCompany)
+1.  Company (create and update, getById)
+2.  Contact (create, update, linkToCompany, getById)
 3.  Deal (create and update)
 4.  Deal phases (get)
 5.  Deal sources (get)
