@@ -8,6 +8,7 @@ use Teamleader\Entities\Deals\Deal;
 use Teamleader\Entities\General\User;
 use Teamleader\Entities\Invoicing\Invoice;
 use JsonSerializable;
+use Teamleader\Exceptions\ApiException;
 
 /**
  * Class Model
@@ -203,7 +204,11 @@ abstract class Model implements JsonSerializable
     public function __get(string $key)
     {
         if (!$this->isLoaded && method_exists($this, 'findById')) {
-            $this->findById();
+            try {
+                $this->findById();
+            } catch (ApiException $apiException) {
+                $this->isLoaded = true;
+            }
         }
 
         if (isset($this->attributes[$key])) {
