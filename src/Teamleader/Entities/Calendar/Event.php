@@ -21,7 +21,7 @@ class Event extends Model
         'id',
         'title',
         'description',
-        'activity_type_id',
+        'activity_type',
         'starts_at',
         'ends_at',
         'location',
