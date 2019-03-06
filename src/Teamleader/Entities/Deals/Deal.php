@@ -9,6 +9,8 @@ class Deal extends Model
 {
     use Storable;
 
+    const TYPE = 'deal';
+
     protected $fillable = [
         'id',
         'lead', // { "customer": { "type": "contact", "id" : "" }, "contact_person_id" : "" }

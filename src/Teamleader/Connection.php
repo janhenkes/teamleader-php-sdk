@@ -455,6 +455,7 @@ class Connection
     {
         try {
             Psr7\rewind_body($response);
+
             return json_decode($response->getBody()->getContents(), true);
         } catch (\RuntimeException $e) {
             throw new ApiException($e->getMessage());

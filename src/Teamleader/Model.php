@@ -1,14 +1,32 @@
-<?php namespace Teamleader;
+<?php
+
+namespace Teamleader;
+
+use Teamleader\Entities\CRM\Company;
+use Teamleader\Entities\CRM\Contact;
+use Teamleader\Entities\Deals\Deal;
+use Teamleader\Entities\General\User;
+use Teamleader\Entities\Invoicing\Invoice;
+use JsonSerializable;
+use Teamleader\Exceptions\ApiException;
 
 /**
  * Class Model
  *
  * @package Teamleader
  */
-abstract class Model
+abstract class Model implements JsonSerializable
 {
     const NESTING_TYPE_ARRAY_OF_OBJECTS = 0;
     const NESTING_TYPE_NESTED_OBJECTS = 1;
+
+    protected $references = [
+        Contact::TYPE => Contact::class,
+        Company::TYPE => Company::class,
+        Deal::TYPE => Deal::class,
+        Invoice::TYPE => Invoice::class,
+        User::TYPE => User::class,
+    ];
 
     /**
      * @var Connection
@@ -57,6 +75,11 @@ abstract class Model
     protected $multipleNestedEntities = [];
 
     /**
+     * @var bool
+     */
+    protected $isLoaded;
+
+    /**
      * Model constructor.
      *
      * @param Connection $connection
@@ -65,6 +88,7 @@ abstract class Model
     public function __construct(Connection $connection, array $attributes = [])
     {
         $this->connection = $connection;
+        $this->isLoaded = !method_exists($this, 'findById');
         $this->fill($attributes);
     }
 
@@ -95,8 +119,16 @@ abstract class Model
      */
     protected function fill(array $attributes): void
     {
-        foreach ($this->fillableFromArray($attributes) as $key => $value) {
-            $this->setAttribute($key, $value);
+        $attributes = $this->fillableFromArray($attributes);
+
+        foreach ($attributes as $key => $attribute) {
+            $this->setAttribute($key, $attribute);
+        }
+
+        if (!empty($attributes)) {
+            $loadedAttributes = $attributes;
+            unset($loadedAttributes[$this->primaryKey]);
+            $this->isLoaded = !empty($loadedAttributes);
         }
     }
 
@@ -133,8 +165,35 @@ abstract class Model
     protected function setAttribute(string $key, $value): void
     {
         if ($this->isFillable($key)) {
-            $this->attributes[$key] = $value;
+            $this->attributes[$key] = $this->addReferences($value);
         }
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return mixed
+     */
+    private function addReferences($data)
+    {
+        if (!is_array($data)) {
+            return $data;
+        }
+
+        if (count($data) === 2 && array_key_exists('type', $data) && array_key_exists('id', $data)) {
+            if (!array_key_exists($data['type'], $this->references)) {
+                return $data;
+            }
+
+            $class = $this->references[$data['type']];
+            return new $class($this->connection, ['id' => $data['id']]);
+        }
+
+        foreach ($data as $key => $value) {
+            $data[$key] = $this->addReferences($value);
+        }
+
+        return $data;
     }
 
     /**
@@ -144,6 +203,14 @@ abstract class Model
      */
     public function __get(string $key)
     {
+        if (!$this->isLoaded && method_exists($this, 'findById')) {
+            try {
+                $this->findById();
+            } catch (ApiException $apiException) {
+                $this->isLoaded = true;
+            }
+        }
+
         if (isset($this->attributes[$key])) {
             return $this->attributes[$key];
         }
@@ -359,5 +426,19 @@ abstract class Model
     public function __isset(string $name): bool
     {
         return (isset($this->attributes[$name]) && !is_null($this->attributes[$name]));
+    }
+
+    public function jsonSerialize()
+    {
+        if (!defined('static::TYPE')) {
+            return $this->getArrayWithNestedObjects();
+        }
+
+        $primaryKey = $this->primaryKey;
+
+        return (object) [
+            'type' => static::TYPE,
+            $primaryKey => $this->$primaryKey,
+        ];
     }
 }

@@ -12,6 +12,8 @@ class User extends Model
     use FindAll;
     use FindById;
 
+    const TYPE = 'user';
+
     protected $fillable = [
         'id',
         'account', // { "type":"account", "id":"" }

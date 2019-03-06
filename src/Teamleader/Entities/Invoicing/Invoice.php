@@ -11,6 +11,8 @@ class Invoice extends Model
     use FindAll;
     use Storable;
 
+    const TYPE = 'invoice';
+
     private $createAction = 'draft';
 
     protected $fillable = [

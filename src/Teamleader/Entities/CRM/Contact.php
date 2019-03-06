@@ -3,6 +3,7 @@
 namespace Teamleader\Entities\CRM;
 
 use Teamleader\Actions\FindAll;
+use Teamleader\Actions\FindById;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
 
@@ -10,6 +11,9 @@ class Contact extends Model
 {
     use Storable;
     use FindAll;
+    use FindById;
+
+    const TYPE = 'contact';
 
     protected $fillable = [
         'id',
