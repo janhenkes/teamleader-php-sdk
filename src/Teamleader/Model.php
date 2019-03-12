@@ -204,6 +204,10 @@ abstract class Model implements JsonSerializable
     public function __get(string $key)
     {
         if (!$this->isLoaded && method_exists($this, 'findById')) {
+            if ($key === $this->primaryKey && isset($this->attributes[$key])) {
+                return $this->attributes[$key];
+            }
+
             try {
                 $this->findById();
             } catch (ApiException $apiException) {
