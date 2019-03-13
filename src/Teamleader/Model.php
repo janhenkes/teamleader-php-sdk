@@ -80,6 +80,11 @@ abstract class Model implements JsonSerializable
     protected $isLoaded;
 
     /**
+     * @var array
+     */
+    protected static $referencesCache = [];
+
+    /**
      * Model constructor.
      *
      * @param Connection $connection
@@ -185,8 +190,13 @@ abstract class Model implements JsonSerializable
                 return $data;
             }
 
+            if (isset(static::$referencesCache[$data['type']][$data['id']])) {
+                return static::$referencesCache[$data['type']][$data['id']];
+            }
             $class = $this->references[$data['type']];
-            return new $class($this->connection, ['id' => $data['id']]);
+            static::$referencesCache[$data['type']][$data['id']] = new $class($this->connection, ['id' => $data['id']]);
+
+            return static::$referencesCache[$data['type']][$data['id']];
         }
 
         foreach ($data as $key => $value) {
@@ -204,6 +214,10 @@ abstract class Model implements JsonSerializable
     public function __get(string $key)
     {
         if (!$this->isLoaded && method_exists($this, 'findById')) {
+            if ($key === $this->primaryKey && isset($this->attributes[$key])) {
+                return $this->attributes[$key];
+            }
+
             try {
                 $this->findById();
             } catch (ApiException $apiException) {
