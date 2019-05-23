@@ -18,18 +18,28 @@ class Company extends Model
     protected $fillable = [
         'id',
         'name',
-        'business_type_id',
+        'business_type', // { "type": "", "id" : "" }
         'vat_number',
         'national_identification_number',
         'emails',
         'telephones',
         'website',
-        'addresses',
+        'addresses', // { "type": "", "address": "" } used in contacts.info
+        'primary_address', // used in contacts.list
         'iban',
         'bic',
         'language',
-        'responsible_user_id',
+        'preferred_currency',
+        'payment_term', // { "type": "" }
+        'invoicing_preferences', // { "electronic_invoicing_address": "" }
+        'responsible_user', // { "type": "", "id" : "" }
         'remarks',
+        'added_at',
+        'updated_at',
+        'web_url',
+        'tags',
+        'custom_fields',
+        'marketing_mails_consent',
     ];
 
     /**
