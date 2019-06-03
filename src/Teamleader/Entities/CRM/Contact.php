@@ -15,30 +15,38 @@ class Contact extends Model
 
     const TYPE = 'contact';
 
+    /**
+     * @var string
+     */
+    protected $endpoint = 'contacts';
+
     protected $fillable = [
         'id',
         'first_name',
         'last_name',
         'salutation',
-        'emails', // { "type": "", "email" : "" }
-        'telephones', // { "type": "", "number" : "" }
+        'emails', // { "type": "", "email": "" }
+        'telephones', // { "type": "", "number": "" }
         'website',
-        'addresses', // { "type": "", "address" : "" }
-        'language',
+        'addresses', // { "type": "", "address": "" } used in contacts.info
+        'primary_address', // used in contacts.list
         'gender',
         'birthdate',
         'iban',
         'bic',
+        'national_identification_number',
+        'companies', // { "position": "", "decision_maker": "", "company": { "type": "", "id" : "" } } used in contacts.info
+        'language',
+        'payment_term',
+        'invoicing_preferences',
         'remarks',
         'tags',
-        'custom_fields',
-        'marketing_mails_consent',
+        'custom_fields', // used in contacts.info
+        'marketing_mails_consent', // used in contacts.info
+        'added_at',
+        'updated_at',
+        'web_url',
     ];
-
-    /**
-     * @var string
-     */
-    protected $endpoint = 'contacts';
 
     /**
      * @param array $arguments
