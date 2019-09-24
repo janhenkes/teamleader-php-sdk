@@ -106,6 +106,7 @@ Many thanks to @Senjutsuu and @carakas from @sumocoders for most of the below ch
 
 - Updated outdated attributes for the company entity
 - Fix getting data from the cache when there is no cached data
+- Storable::update fixed
 
 ## 1.2.0 (2018-08-23)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/1.1.1...1.2.0)
