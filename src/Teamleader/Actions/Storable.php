@@ -41,12 +41,9 @@ trait Storable
      */
     public function update()
     {
-        $result = $this->connection()->patch($this->getEndpoint() . '.update' . '/' . urlencode($this->id), $this->jsonWithNamespace());
-        if ($result === 200) {
-            return true;
-        }
+        $result = $this->connection()->post($this->getEndpoint() . '.update', $this->jsonWithNamespace());
 
-        return $this->selfFromResponse($result);
+        return $this;
     }
 
     /**
