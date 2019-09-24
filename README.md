@@ -7,7 +7,7 @@ Currently we only support a few entities and per entity only a few actions:
 
 1.  Company (create and update, getById)
 2.  Contact (create, update, linkToCompany, getById)
-3.  Deal (create and update)
+3.  Deal (create, update, move)
 4.  Deal phases (get)
 5.  Deal sources (get)
 6.  Activity types (get)
@@ -21,6 +21,7 @@ Currently we only support a few entities and per entity only a few actions:
 14. Withholding tax rates (get)
 15. Departments (get)
 16. User (me, get, getById)
+17. Webhook (get, register)
 
 Teamleader API v2 works with OAuth2. This means your application needs to be registered on the [Teamleader Marketplace](https://marketplace.teamleader.eu/nl/nl/ontwikkel/integraties) (you can keep them private though).
 
@@ -70,6 +71,41 @@ $dealPhases = $client->dealPhase()->get();
 - [ ] Add all other Entities
 
 # Change log
+
+## 2.0.0 (2019-09-24)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/1.1.1...0c7c5f4080adbd1640542ca79f68a01191c61e20)
+
+Many thanks to @Senjutsuu and @carakas from @sumocoders for most of the below changes!
+
+**Features:**
+
+- Move deals 
+- List and register webhooks
+- Added repo license
+- Added old id to new id migration endpoint 
+- Moved to PHP 7.1
+- Activity type entity added
+- Event entity added
+- Added a remove endpoint to all storable entities
+- Added businesstype entity
+- Added tag entity
+- Added invoice entity
+- Added credit note entity
+- Added tax rate entity
+- Added payment term entity
+- Added withholding tax rate entity
+- Added department entity
+- Added unit tests
+- A lot of code refactoring
+- Added filter, paging en sorting attributes to entities
+- Added JSON serialisation
+- Added fetchAll method to entities
+- Added user entity
+
+**Fixes:**
+
+- Updated outdated attributes for the company entity
+- Fix getting data from the cache when there is no cached data
 
 ## 1.2.0 (2018-08-23)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/1.1.1...1.2.0)
