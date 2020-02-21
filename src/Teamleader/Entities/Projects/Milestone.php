@@ -10,7 +10,6 @@ use Teamleader\Model;
 class Milestone extends Model
 {
     use FindAll;
-    use Storable;
     use FindById;
 
     const TYPE = 'milestone';

@@ -10,7 +10,6 @@ use Teamleader\Model;
 class Project extends Model
 {
     use FindAll;
-    use Storable;
     use FindById;
 
     const TYPE = 'project';
