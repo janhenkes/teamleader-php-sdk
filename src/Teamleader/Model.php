@@ -8,6 +8,10 @@ use Teamleader\Entities\Deals\Deal;
 use Teamleader\Entities\General\User;
 use Teamleader\Entities\Invoicing\Invoice;
 use JsonSerializable;
+use Teamleader\Entities\Projects\Milestone;
+use Teamleader\Entities\Projects\Project;
+use Teamleader\Entities\Tasks\Task;
+use Teamleader\Entities\TimeTracking\TimeTracking;
 use Teamleader\Exceptions\ApiException;
 
 /**
@@ -26,6 +30,10 @@ abstract class Model implements JsonSerializable
         Deal::TYPE => Deal::class,
         Invoice::TYPE => Invoice::class,
         User::TYPE => User::class,
+        Task::TYPE => Task::class,
+        Project::TYPE => Project::class,
+        Milestone::TYPE => Milestone::class,
+        TimeTracking::TYPE => TimeTracking::class,
     ];
 
     /**
