@@ -20,6 +20,10 @@ use Teamleader\Entities\Invoicing\TaxRate;
 use Teamleader\Entities\Invoicing\WithholdingTaxRate;
 use Teamleader\Entities\Other\Webhook;
 use Teamleader\Entities\Other\Migrate;
+use Teamleader\Entities\Tasks\Task;
+use Teamleader\Entities\Projects\Project;
+use Teamleader\Entities\Projects\Milestone;
+use Teamleader\Entities\TimeTracking\TimeTracking;
 
 class Client
 {
@@ -128,5 +132,25 @@ class Client
     public function department(array $attributes = [])
     {
         return new Department($this->connection, $attributes);
+    }
+
+    public function task(array $attributes = [])
+    {
+        return new Task($this->connection, $attributes);
+    }
+
+    public function project(array $attributes = [])
+    {
+        return new Project($this->connection, $attributes);
+    }
+
+    public function milestone(array $attributes = [])
+    {
+        return new Milestone($this->connection, $attributes);
+    }
+
+    public function timeTracking(array $attributes = [])
+    {
+        return new TimeTracking($this->connection, $attributes);
     }
 }
