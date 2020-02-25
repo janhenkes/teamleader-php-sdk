@@ -65,21 +65,20 @@ class DealTest extends \PHPUnit\Framework\TestCase
                                 ],
                             ],
                             'quotations' => [
-                                    0 => [
-                                        'id' => 'e2314517-3cab-4aa9-8471-450e73449041',
-                                        'type' => 'quotation',
-                                    ],
+                                0 => [
+                                    'id' => 'e2314517-3cab-4aa9-8471-450e73449041',
+                                    'type' => 'quotation',
                                 ],
+                            ],
                             'created_at' => '2017-05-09T11:25:11+00:00',
                             'updated_at' => '2017-05-09T11:30:58+00:00',
                             'web_url' => 'https://app.teamleader.eu/sale_detail.php?id=f6871b06-6513-4750-b5e6-ff3503b5a029',
                             'custom_fields' => [
                                 0 => [
-                                    'definition' =>
-                                        [
-                                            'type' => 'customFieldDefinition',
-                                            'id' => 'bf6765de-56eb-40ec-ad14-9096c5dc5fe1',
-                                        ],
+                                    'definition' => [
+                                        'type' => 'customFieldDefinition',
+                                        'id' => 'bf6765de-56eb-40ec-ad14-9096c5dc5fe1',
+                                    ],
                                     'value' => '092980616',
                                 ],
                             ],
