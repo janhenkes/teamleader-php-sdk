@@ -19,9 +19,9 @@ class Deal extends Model
         'id',
         'lead', // { "customer": { "type": "contact", "id" : "" }, "contact_person_id" : "" }
         'title',
-        'source_id',
-        'department_id',
-        'responsible_user_id',
+        'source', // { "type": "", "id" : "" }
+        'department', // { "type": "", "id" : "" }
+        'responsible_user', // { "type": "", "id" : "" }
         'phase_id',
         'estimated_value',
         'estimated_probability',

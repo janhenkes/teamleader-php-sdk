@@ -24,6 +24,8 @@ class User extends Model
         'language',
         'function',
         'time_zone',
+        'custom_fields',
+        'status',
     ];
 
     /**
