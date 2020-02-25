@@ -2,12 +2,14 @@
 
 namespace Teamleader\Entities\Deals;
 
+use Teamleader\Actions\FindAll;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
 
 class Deal extends Model
 {
     use Storable;
+    use FindAll;
 
     const TYPE = 'deal';
 
