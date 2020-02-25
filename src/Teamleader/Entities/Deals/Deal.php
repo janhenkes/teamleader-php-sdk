@@ -3,6 +3,7 @@
 namespace Teamleader\Entities\Deals;
 
 use Teamleader\Actions\FindAll;
+use Teamleader\Actions\FindById;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
 
@@ -10,6 +11,7 @@ class Deal extends Model
 {
     use Storable;
     use FindAll;
+    use FindById;
 
     const TYPE = 'deal';
 
