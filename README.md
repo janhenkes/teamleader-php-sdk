@@ -10,7 +10,7 @@ Currently we only support a few entities and per entity only a few actions:
 3.  Deal (create, update, move)
 4.  Deal phases (get)
 5.  Deal sources (get)
-6.  Deal (get)
+6.  Deal (get, getById)
 7.  Activity types (get)
 8.  Event (create, update, delete, get, getById)
 9.  Business types (get)
