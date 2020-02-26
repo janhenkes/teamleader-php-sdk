@@ -13,6 +13,7 @@ use Teamleader\Entities\Deals\DealPhase;
 use Teamleader\Entities\Deals\DealSource;
 use Teamleader\Entities\General\Department;
 use Teamleader\Entities\General\User;
+use Teamleader\Entities\General\WorkType;
 use Teamleader\Entities\Invoicing\CreditNote;
 use Teamleader\Entities\Invoicing\Invoice;
 use Teamleader\Entities\Invoicing\PaymentTerm;
@@ -152,5 +153,10 @@ class Client
     public function timeTracking(array $attributes = [])
     {
         return new TimeTracking($this->connection, $attributes);
+    }
+
+    public function workType(array $attributes = [])
+    {
+        return new WorkType($this->connection, $attributes);
     }
 }
