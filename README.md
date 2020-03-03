@@ -7,7 +7,7 @@ Currently we only support a few entities and per entity only a few actions:
 
 1.  Company (create and update, getById)
 2.  Contact (create, update, linkToCompany, getById)
-3.  Deal (create, update, move)
+3.  Deal (create, update, move, get, getById)
 4.  Deal phases (get)
 5.  Deal sources (get)
 6.  Activity types (get)
@@ -26,6 +26,7 @@ Currently we only support a few entities and per entity only a few actions:
 19. Tasks (get, getById)
 20. Milestones (get, getById)
 21. TimeTracking (get, getById)
+22. Worktypes (get)
 
 Teamleader API v2 works with OAuth2. This means your application needs to be registered on the [Teamleader Marketplace](https://marketplace.teamleader.eu/nl/nl/ontwikkel/integraties) (you can keep them private though).
 
