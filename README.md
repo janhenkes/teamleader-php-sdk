@@ -77,6 +77,20 @@ $dealPhases = $client->dealPhase()->get();
 
 # Change log
 
+## 2.1.0 (2020-03-03)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.0.0...dad6de27b32d24d5ec81cd3cf0fc74b029db21f2)
+
+Credits for this release go to @cschalenborgh
+
+**Features:**
+
+- Get deals improvements
+- Get projects
+- Get tasks
+- Get milestones
+- Get time tracking
+- Get work types
+
 ## 2.0.0 (2019-09-24)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/1.1.1...0c7c5f4080adbd1640542ca79f68a01191c61e20)
 
