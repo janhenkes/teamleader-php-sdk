@@ -14,7 +14,7 @@ Currently we only support a few entities and per entity only a few actions:
 7.  Event (create, update, delete, get, getById)
 8.  Business types (get)
 9.  Tags (get)
-10. Invoice (get)
+10. Invoice (get, book, registerPayment)
 11. Credit notes (get)
 12. Payment terms (get)
 13. Tax rates (get)
@@ -83,10 +83,10 @@ Many thanks to @Senjutsuu and @carakas from @sumocoders for most of the below ch
 
 **Features:**
 
-- Move deals 
+- Move deals
 - List and register webhooks
 - Added repo license
-- Added old id to new id migration endpoint 
+- Added old id to new id migration endpoint
 - Moved to PHP 7.1
 - Activity type entity added
 - Event entity added
