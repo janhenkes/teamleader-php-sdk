@@ -31,4 +31,30 @@ class Invoice extends Model
      * @var string
      */
     protected $endpoint = 'invoices';
+
+    public function book($date = null) {
+        $arguments = [
+            'id' => $this->attributes['id'],
+            'on' => $date ?? date('Y-m-d'),
+        ];
+
+        $result = $this->connection()->post($this->getEndpoint() . '.book', json_encode($arguments, JSON_FORCE_OBJECT));
+
+        return $result;
+    }
+
+    public function registerPayment($amount, $currency = "EUR", $paidAt = null) {
+        $arguments = [
+            'id' => $this->attributes['id'],
+            'payment' => [
+                'amount' => $amount,
+                'currency' => $currency
+            ],
+            'paid_at' => $paidAt ?? date('c'),
+        ];
+
+        $result = $this->connection()->post($this->getEndpoint() . '.registerPayment', json_encode($arguments, JSON_FORCE_OBJECT));
+
+        return $result;
+    }
 }
