@@ -25,6 +25,8 @@ use Teamleader\Entities\Tasks\Task;
 use Teamleader\Entities\Projects\Project;
 use Teamleader\Entities\Projects\Milestone;
 use Teamleader\Entities\TimeTracking\TimeTracking;
+use Teamleader\Entities\Products\ProductCategory;
+use Teamleader\Entities\Products\Product;
 
 class Client
 {
@@ -158,5 +160,15 @@ class Client
     public function workType(array $attributes = [])
     {
         return new WorkType($this->connection, $attributes);
+    }
+
+    public function productCategory(array $attributes = [])
+    {
+        return new ProductCategory($this->connection, $attributes);
+    }
+
+    public function product(array $attributes = [])
+    {
+        return new Product($this->connection, $attributes);
     }
 }
