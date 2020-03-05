@@ -79,6 +79,17 @@ $dealPhases = $client->dealPhase()->get();
 
 # Change log
 
+## 2.2.0 (2020-03-04)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.1.0...d38974d8a6eb42442e08ba55296903693be72971)
+
+Credits for this release go to [@kjellknapen](https://github.com/kjellknapen) and [@PazkaL](https://github.com/PazkaL)
+
+**Features:**
+
+- Book invoices and register payments
+- Get product categories
+- Get products
+
 ## 2.1.0 (2020-03-03)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.0.0...dad6de27b32d24d5ec81cd3cf0fc74b029db21f2)
 
