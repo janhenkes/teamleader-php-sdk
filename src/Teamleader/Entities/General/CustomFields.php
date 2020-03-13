@@ -10,7 +10,6 @@ use Teamleader\Model;
 class CustomFields extends Model
 {
     use FindAll;
-    use Storable;
     use FindById;
 
     protected $fillable = [
