@@ -14,6 +14,7 @@ use Teamleader\Entities\Deals\DealSource;
 use Teamleader\Entities\General\CustomFields;
 use Teamleader\Entities\General\Department;
 use Teamleader\Entities\General\User;
+use Teamleader\Entities\General\WorkType;
 use Teamleader\Entities\Invoicing\CreditNote;
 use Teamleader\Entities\Invoicing\Invoice;
 use Teamleader\Entities\Invoicing\PaymentTerm;
@@ -21,6 +22,12 @@ use Teamleader\Entities\Invoicing\TaxRate;
 use Teamleader\Entities\Invoicing\WithholdingTaxRate;
 use Teamleader\Entities\Other\Webhook;
 use Teamleader\Entities\Other\Migrate;
+use Teamleader\Entities\Tasks\Task;
+use Teamleader\Entities\Projects\Project;
+use Teamleader\Entities\Projects\Milestone;
+use Teamleader\Entities\TimeTracking\TimeTracking;
+use Teamleader\Entities\Products\ProductCategory;
+use Teamleader\Entities\Products\Product;
 
 class Client
 {
@@ -131,6 +138,41 @@ class Client
         return new Department($this->connection, $attributes);
     }
 
+    public function task(array $attributes = [])
+    {
+        return new Task($this->connection, $attributes);
+    }
+
+    public function project(array $attributes = [])
+    {
+        return new Project($this->connection, $attributes);
+    }
+
+    public function milestone(array $attributes = [])
+    {
+        return new Milestone($this->connection, $attributes);
+    }
+
+    public function timeTracking(array $attributes = [])
+    {
+        return new TimeTracking($this->connection, $attributes);
+    }
+
+    public function workType(array $attributes = [])
+    {
+        return new WorkType($this->connection, $attributes);
+    }
+
+    public function productCategory(array $attributes = [])
+    {
+        return new ProductCategory($this->connection, $attributes);
+    }
+
+    public function product(array $attributes = [])
+    {
+        return new Product($this->connection, $attributes);
+    }
+  
     public function customFields(array $attributes = [])
     {
         return new CustomFields($this->connection, $attributes);
