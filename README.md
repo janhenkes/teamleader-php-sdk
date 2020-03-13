@@ -22,6 +22,7 @@ Currently we only support a few entities and per entity only a few actions:
 15. Departments (get)
 16. User (me, get, getById)
 17. Webhook (get, register)
+17. Custom fields (get)
 
 Teamleader API v2 works with OAuth2. This means your application needs to be registered on the [Teamleader Marketplace](https://marketplace.teamleader.eu/nl/nl/ontwikkel/integraties) (you can keep them private though).
 
