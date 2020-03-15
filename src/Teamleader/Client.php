@@ -11,6 +11,7 @@ use Teamleader\Entities\CRM\Tag;
 use Teamleader\Entities\Deals\Deal;
 use Teamleader\Entities\Deals\DealPhase;
 use Teamleader\Entities\Deals\DealSource;
+use Teamleader\Entities\General\CustomFields;
 use Teamleader\Entities\General\Department;
 use Teamleader\Entities\General\User;
 use Teamleader\Entities\General\WorkType;
@@ -170,5 +171,10 @@ class Client
     public function product(array $attributes = [])
     {
         return new Product($this->connection, $attributes);
+    }
+  
+    public function customFields(array $attributes = [])
+    {
+        return new CustomFields($this->connection, $attributes);
     }
 }
