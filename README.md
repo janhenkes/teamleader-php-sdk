@@ -80,6 +80,15 @@ $dealPhases = $client->dealPhase()->get();
 
 # Change log
 
+## 2.3.0 (2020-03-15)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.2.0...2.3.0)
+
+Thanks to [@marzsman](https://github.com/marzsman)
+
+**Features:**
+
+- Get custom fields
+
 ## 2.2.0 (2020-03-04)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.1.0...d38974d8a6eb42442e08ba55296903693be72971)
 
