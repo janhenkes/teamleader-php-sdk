@@ -27,6 +27,7 @@ class Deal extends Model
         'estimated_probability',
         'estimated_closing_date',
         'custom_fields',
+        'summary',
     ];
 
     /**
