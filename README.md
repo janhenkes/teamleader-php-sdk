@@ -14,7 +14,7 @@ Currently we only support a few entities and per entity only a few actions:
 7.  Event (create, update, delete, get, getById)
 8.  Business types (get)
 9.  Tags (get)
-10. Invoice (get, book, registerPayment, download)
+10. Invoice (get, book, registerPayment, download, file)
 11. Credit notes (get)
 12. Payment terms (get)
 13. Tax rates (get)

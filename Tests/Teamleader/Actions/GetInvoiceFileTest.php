@@ -1,6 +1,6 @@
 <?php
 
-class DownloadInvoiceTest extends \PHPUnit\Framework\TestCase
+class GetInvoiceFileTest extends \PHPUnit\Framework\TestCase
 {
     private $invoiceData = [
         'id' => 'e4bf74ca-e900-471f-84b1-276e5d3afae4',
@@ -44,6 +44,6 @@ class DownloadInvoiceTest extends \PHPUnit\Framework\TestCase
             ->willReturn(200);
 
         $client = new \Teamleader\Client($connectionMock);
-        $client->invoice($this->invoiceData)->download($this->format);
+        $pdf = $client->invoice($this->invoiceData)->file($this->format);
     }
 }

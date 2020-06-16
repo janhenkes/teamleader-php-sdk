@@ -68,4 +68,19 @@ class Invoice extends Model
 
         return $result;
     }
+
+    public function file($format = "pdf") {
+        $arguments = [
+            'id' => $this->attributes['id'],
+            'format' => $format,
+        ];
+
+        $result = $this->download();
+
+        if (isset($result['data']) && isset($result['data']['location'])) {
+          return file_get_contents($result['data']['location']);
+        }
+
+        return false;
+    }
 }
