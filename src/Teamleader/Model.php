@@ -6,8 +6,11 @@ use Teamleader\Entities\CRM\Company;
 use Teamleader\Entities\CRM\Contact;
 use Teamleader\Entities\Deals\Deal;
 use Teamleader\Entities\General\User;
+use Teamleader\Entities\General\WorkType;
 use Teamleader\Entities\Invoicing\Invoice;
 use JsonSerializable;
+use Teamleader\Entities\Products\ProductCategory;
+use Teamleader\Entities\Products\Product;
 use Teamleader\Entities\Projects\Milestone;
 use Teamleader\Entities\Projects\Project;
 use Teamleader\Entities\Tasks\Task;
@@ -34,6 +37,9 @@ abstract class Model implements JsonSerializable
         Project::TYPE => Project::class,
         Milestone::TYPE => Milestone::class,
         TimeTracking::TYPE => TimeTracking::class,
+        WorkType::TYPE => WorkType::class,
+        ProductCategory::TYPE => ProductCategory::class,
+        Product::TYPE => Product::class,
     ];
 
     /**

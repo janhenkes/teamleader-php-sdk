@@ -7,14 +7,14 @@ Currently we only support a few entities and per entity only a few actions:
 
 1.  Company (create and update, getById)
 2.  Contact (create, update, linkToCompany, getById)
-3.  Deal (create, update, move)
+3.  Deal (create, update, move, get, getById)
 4.  Deal phases (get)
 5.  Deal sources (get)
 6.  Activity types (get)
 7.  Event (create, update, delete, get, getById)
 8.  Business types (get)
 9.  Tags (get)
-10. Invoice (get)
+10. Invoice (get, book, registerPayment)
 11. Credit notes (get)
 12. Payment terms (get)
 13. Tax rates (get)
@@ -26,6 +26,10 @@ Currently we only support a few entities and per entity only a few actions:
 19. Tasks (get, getById)
 20. Milestones (get, getById)
 21. TimeTracking (get, getById)
+22. Worktypes (get)
+23. Productcategories (get)
+24. Products (create, get, getById)
+25. Custom fields (get)
 
 Teamleader API v2 works with OAuth2. This means your application needs to be registered on the [Teamleader Marketplace](https://marketplace.teamleader.eu/nl/nl/ontwikkel/integraties) (you can keep them private though).
 
@@ -76,6 +80,49 @@ $dealPhases = $client->dealPhase()->get();
 
 # Change log
 
+## 2.4.0 (2020-06-08)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.3.0...2.4.0)
+
+Thanks to [@jurrienpiris](https://github.com/jurrienpiris)
+
+**Features:**
+
+- Added summary to fillable attributes of the Deal entity
+
+## 2.3.0 (2020-03-15)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.2.0...2.3.0)
+
+Thanks to [@marzsman](https://github.com/marzsman)
+
+**Features:**
+
+- Get custom fields
+
+## 2.2.0 (2020-03-04)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.1.0...d38974d8a6eb42442e08ba55296903693be72971)
+
+Credits for this release go to [@kjellknapen](https://github.com/kjellknapen) and [@PazkaL](https://github.com/PazkaL)
+
+**Features:**
+
+- Book invoices and register payments
+- Get product categories
+- Get products
+
+## 2.1.0 (2020-03-03)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.0.0...dad6de27b32d24d5ec81cd3cf0fc74b029db21f2)
+
+Credits for this release go to @cschalenborgh
+
+**Features:**
+
+- Get deals improvements
+- Get projects
+- Get tasks
+- Get milestones
+- Get time tracking
+- Get work types
+
 ## 2.0.0 (2019-09-24)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/1.1.1...0c7c5f4080adbd1640542ca79f68a01191c61e20)
 
@@ -83,10 +130,10 @@ Many thanks to @Senjutsuu and @carakas from @sumocoders for most of the below ch
 
 **Features:**
 
-- Move deals 
+- Move deals
 - List and register webhooks
 - Added repo license
-- Added old id to new id migration endpoint 
+- Added old id to new id migration endpoint
 - Moved to PHP 7.1
 - Activity type entity added
 - Event entity added
