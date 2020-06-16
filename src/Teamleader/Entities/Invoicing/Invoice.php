@@ -70,12 +70,8 @@ class Invoice extends Model
     }
 
     public function file($format = "pdf") {
-        $arguments = [
-            'id' => $this->attributes['id'],
-            'format' => $format,
-        ];
 
-        $result = $this->download();
+        $result = $this->download($format);
 
         if (isset($result['data']) && isset($result['data']['location'])) {
           return file_get_contents($result['data']['location']);
