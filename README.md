@@ -80,6 +80,15 @@ $dealPhases = $client->dealPhase()->get();
 
 # Change log
 
+## 2.5.0 (2020-06-22)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.4.0...2.5.0)
+
+Thanks to [@kjellknapen](https://github.com/kjellknapen)
+
+**Features:**
+
+- Added invoice download and file actions
+
 ## 2.4.0 (2020-06-08)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.3.0...2.4.0)
 
