@@ -80,6 +80,11 @@ $dealPhases = $client->dealPhase()->get();
 
 # Change log
 
+## 2.5.1 (2020-06-29)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.5.0...2.5.1)
+
+- Updated fillables for Invoice entity
+
 ## 2.5.0 (2020-06-22)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.4.0...2.5.0)
 
