@@ -13,7 +13,7 @@ class Quotation extends Model
     use FindAll;
     use FindById;
 
-    const TYPE = 'deal';
+    const TYPE = 'quotation';
 
     protected $fillable = [
         'id',
