@@ -11,6 +11,7 @@ use Teamleader\Entities\CRM\Tag;
 use Teamleader\Entities\Deals\Deal;
 use Teamleader\Entities\Deals\DealPhase;
 use Teamleader\Entities\Deals\DealSource;
+use Teamleader\Entities\Deals\Quotation;
 use Teamleader\Entities\General\CustomFields;
 use Teamleader\Entities\General\Department;
 use Teamleader\Entities\General\User;
@@ -176,5 +177,10 @@ class Client
     public function customFields(array $attributes = [])
     {
         return new CustomFields($this->connection, $attributes);
+    }
+
+    public function quotation(array $attributes = [])
+    {
+        return new Quotation($this->connection, $attributes);
     }
 }
