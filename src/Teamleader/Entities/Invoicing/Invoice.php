@@ -3,12 +3,14 @@
 namespace Teamleader\Entities\Invoicing;
 
 use Teamleader\Actions\FindAll;
+use Teamleader\Actions\FindById;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
 
 class Invoice extends Model
 {
     use FindAll;
+    use FindById;
     use Storable;
 
     const TYPE = 'invoice';
