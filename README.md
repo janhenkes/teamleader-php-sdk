@@ -74,12 +74,14 @@ $company = $client->company( [
 $dealPhases = $client->dealPhase()->get();
 ```
 
-# TODO
-
-- [ ] Support custom actions on Deals
-- [ ] Add all other Entities
-
 # Change log
+
+## 2.6.0 (2020-09-25)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.5.1...2.6.0)
+
+Cheers to [@rQwk](https://github.com/rQwk)
+
+- Added Quotations endpoint
 
 ## 2.5.1 (2020-06-29)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.5.0...2.5.1)
