@@ -76,6 +76,11 @@ $dealPhases = $client->dealPhase()->get();
 
 # Change log
 
+## 2.7.0 (2020-11-11)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.6.0...2.7.0)
+
+- Find invoice by id
+
 ## 2.6.0 (2020-09-25)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.5.1...2.6.0)
 
