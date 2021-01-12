@@ -76,6 +76,11 @@ $dealPhases = $client->dealPhase()->get();
 
 # Change log
 
+## 2.7.1 (2021-01-12)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.7.0...2.7.1)
+
+- Added custom fields to Project entity
+
 ## 2.7.0 (2020-11-11)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.6.0...2.7.0)
 
