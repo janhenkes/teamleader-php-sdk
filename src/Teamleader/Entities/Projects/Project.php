@@ -23,7 +23,8 @@ class Project extends Model
         'starts_on',
         'due_on',
         'customer', // { "type": "", "id" : "" }
-        'source'
+        'source',
+        'custom_fields'
     ];
 
     /**
