@@ -1,6 +1,6 @@
 # Teamleader API v2 PHP SDK
 
-This is a PHP wrapper for the Teamleader API v2. Documentation of the API can be found here: [https://developer.teamleader.eu/]().
+This is a PHP wrapper for the Teamleader API v2. Documentation of the API can be found here: [https://developer.teamleader.eu/](https://developer.teamleader.eu/).
 Please note that the Teamleader API v2 is not complete and some Entities and Actions are missing.
 
 Currently we only support a few entities and per entity only a few actions:
