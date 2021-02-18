@@ -76,6 +76,11 @@ $dealPhases = $client->dealPhase()->get();
 
 # Change log
 
+## 2.8.0 (2021-02-18)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.7.1...2.8.0)
+
+- Imrpoved default cache handler
+
 ## 2.7.1 (2021-01-12)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.7.0...2.7.1)
 

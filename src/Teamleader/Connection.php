@@ -92,25 +92,19 @@ class Connection
      */
     public function getAccessToken()
     {
-        // Check if tokens exist
-        if (
-            empty($this->cacheHandler->get('accessToken'))
-            || empty($this->cacheHandler->get('refreshToken'))
-            || empty($this->cacheHandler->get('tokenExpire'))
-        ) {
-            return false;
+        $accesstoken = $this->cache->get('accessToken');
+        if($accesstoken)
+        {
+            return $accesstoken;
         }
 
-        // Check if token is expired
-        // Get current time + 5 minutes (to allow for time differences)
-        $now = time() + 300;
-        if ($this->cacheHandler->get('tokenExpire') <= $now) {
+        $refreshToken = $this->cache->get('refreshToken');
+        if($refreshToken) {
             $this->acquireRefreshToken();
 
             return $this->getAccessToken();
         }
-
-        return $this->cacheHandler->get('accessToken');
+        return false;
     }
 
     /**
@@ -122,8 +116,7 @@ class Connection
     public function storeTokens(string $accessToken, string $refreshToken, int $expiresIn, int $expiresOn): void
     {
         $this->cacheHandler->set('accessToken', $accessToken, $expiresIn / 60);
-        $this->cacheHandler->set('refreshToken', $refreshToken, $expiresIn / 60);
-        $this->cacheHandler->set('tokenExpire', $expiresOn, $expiresIn / 60);
+        $this->cacheHandler->set('refreshToken', $refreshToken, 60 * 60 * 24 * 365); // a year.
     }
 
     public function clearTokens(): void
