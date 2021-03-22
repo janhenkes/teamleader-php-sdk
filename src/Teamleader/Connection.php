@@ -92,13 +92,13 @@ class Connection
      */
     public function getAccessToken()
     {
-        $accesstoken = $this->cache->get('accessToken');
+        $accesstoken = $this->cacheHandler->get('accessToken');
         if($accesstoken)
         {
             return $accesstoken;
         }
 
-        $refreshToken = $this->cache->get('refreshToken');
+        $refreshToken = $this->cacheHandler->get('refreshToken');
         if($refreshToken) {
             $this->acquireRefreshToken();
 
