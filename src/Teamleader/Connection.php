@@ -33,17 +33,17 @@ class Connection
     /**
      * @var string
      */
-    private $apiUrl = 'https://api.teamleader.eu';
+    private $apiUrl = 'https://api.focus.teamleader.eu';
 
     /**
      * @var string
      */
-    private $authUrl = 'https://app.teamleader.eu/oauth2/authorize';
+    private $authUrl = 'https://focus.teamleader.eu/oauth2/authorize';
 
     /**
      * @var string
      */
-    private $tokenUrl = 'https://app.teamleader.eu/oauth2/access_token';
+    private $tokenUrl = 'https://focus.teamleader.eu/oauth2/access_token';
 
     /**
      * @var string
