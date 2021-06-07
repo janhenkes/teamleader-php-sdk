@@ -1,6 +1,6 @@
 # Teamleader API v2 PHP SDK
 
-This is a PHP wrapper for the Teamleader API v2. Documentation of the API can be found here: [https://developer.teamleader.eu/](https://developer.teamleader.eu/).
+This is a PHP wrapper for the Teamleader API v2. Documentation of the API can be found here: [https://developer.focus.teamleader.eu/](https://developer.focus.teamleader.eu/).
 Please note that the Teamleader API v2 is not complete and some Entities and Actions are missing.
 
 Currently we only support a few entities and per entity only a few actions:
@@ -32,7 +32,7 @@ Currently we only support a few entities and per entity only a few actions:
 25. Custom fields (get)
 26. Quotations (get, getById, download, file)
 
-Teamleader API v2 works with OAuth2. This means your application needs to be registered on the [Teamleader Marketplace](https://marketplace.teamleader.eu/nl/nl/ontwikkel/integraties) (you can keep them private though).
+Teamleader API v2 works with OAuth2. This means your application needs to be registered on the [Teamleader Marketplace](https://marketplace.focus.teamleader.eu/nl/nl/ontwikkel/integraties) (you can keep them private though).
 
 Please contact me at jan@jannesmannes.nl if you have any feedback or questions.
 

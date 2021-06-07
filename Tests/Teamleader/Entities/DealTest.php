@@ -72,7 +72,7 @@ class DealTest extends \PHPUnit\Framework\TestCase
                             ],
                             'created_at' => '2017-05-09T11:25:11+00:00',
                             'updated_at' => '2017-05-09T11:30:58+00:00',
-                            'web_url' => 'https://app.teamleader.eu/sale_detail.php?id=f6871b06-6513-4750-b5e6-ff3503b5a029',
+                            'web_url' => 'https://focus.teamleader.eu/sale_detail.php?id=f6871b06-6513-4750-b5e6-ff3503b5a029',
                             'custom_fields' => [
                                 0 => [
                                     'definition' => [

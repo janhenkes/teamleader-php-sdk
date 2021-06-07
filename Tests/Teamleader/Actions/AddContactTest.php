@@ -36,7 +36,7 @@ class AddContactTest extends \PHPUnit\Framework\TestCase
             ],
         'added_at' => '2019-02-15T07:27:54+00:00',
         'updated_at' => '2019-02-15T07:27:54+00:00',
-        'web_url' => 'https://app.teamleader.eu/contact_detail.php?id=a9601b72-fcf7-07d0-8d79-041c91cf65c1',
+        'web_url' => 'https://focus.teamleader.eu/contact_detail.php?id=a9601b72-fcf7-07d0-8d79-041c91cf65c1',
         'primary_address' =>
             [
                 'line_1' => NULL,
