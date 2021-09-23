@@ -21,11 +21,12 @@ class Event extends Model
         'id',
         'title',
         'description',
+        'creator',
+        'task',
         'activity_type',
         'starts_at',
         'ends_at',
         'location',
-        'work_type_id',
         'attendees', // { "type":"contact", "id":"" }
         'links', // { "type":"contact", "id":"" }
     ];

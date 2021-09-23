@@ -17,9 +17,14 @@ class Quotation extends Model
 
     protected $fillable = [
         'id',
-        'deal', 
+        'deal',
+        'grouped_lines',
         'currency_exchange_rate', // {"from": "", "to": "", "rate": n},
         'total', // { "tax_exclusive":{"amount":n, "currency": ""}, "tax_inclusive":{"amount":n, "currency": ""}, "taxes": [{ "rate": n, "taxable" : {"amount":n, "currency": ""}, "tax":{"amount": n, "currency": "" }}}]}
+        'discounts',
+        'created_at',
+        'updated_at',
+        'status',
     ];
 
     /**

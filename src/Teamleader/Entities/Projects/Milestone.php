@@ -16,12 +16,17 @@ class Milestone extends Model
 
     protected $fillable = [
         'id',
-        'name',
-        'due_on',
-        'status',
         'project', // { "type": "", "id" : "" }
+        'starts_on',
+        'due_on',
+        'name',
         'responsible_user', // { "type": "", "id" : "" }
-        'invoicing_method'
+        'status',
+        'invoicing_method',
+        'depends_on',
+        'dependency_for',
+        'actuals',
+        'budget',
     ];
 
     /**

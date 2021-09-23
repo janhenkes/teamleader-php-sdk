@@ -295,7 +295,7 @@ class Connection
      * @throws ApiException
      */
     private function createRequest(
-        string $method = 'GET',
+        string $method,
         string $endpoint,
         $body = null,
         array $params = [],

@@ -17,19 +17,26 @@ class Deal extends Model
 
     protected $fillable = [
         'id',
-        'lead', // { "customer": { "type": "contact", "id" : "" }, "contact_person_id" : "" }
         'title',
-        'source', // { "type": "", "id" : "" }
-        'department', // { "type": "", "id" : "" }
-        'responsible_user', // { "type": "", "id" : "" }
-        'current_phase', // { "type" : "", "id" : "" }
-        'estimated_value',
-        'estimated_probability',
-        'estimated_closing_date',
-        'custom_fields',
         'summary',
+        'reference',
+        'status',
+        'lead', // { "customer": { "type": "contact", "id" : "" }, "contact_person_id" : "" }
+        'department', // { "type": "", "id" : "" }
+        'estimated_value',
+        'estimated_closing_date',
+        'estimated_probability',
+        'weighted_value',
+        'purchase_order_number',
+        'current_phase', // { "type" : "", "id" : "" }
+        'responsible_user', // { "type": "", "id" : "" }
+        'closed_at',
+        'source', // { "type": "", "id" : "" }
+        'lost_reason',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'web_url',
+        'custom_fields',
     ];
 
     /**

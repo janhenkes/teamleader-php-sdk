@@ -19,26 +19,30 @@ class Invoice extends Model
 
     protected $fillable = [
         'id',
-        'created_at',
-        'custom_fields',
         'department', // { "type": "department", "id": "" }
         'department_id',
-        'discounts',
-        'due_on',
-        'for_attention_of', // { "name": "", "contact": { "type": "contact", "id": "" }
-        'grouped_lines',
-        'invoicee', // { "customer": { "type": "contact", "id" : "" }, "for_attention_of" : { "name": "" OR "contact_id" : "" } }
         'invoice_date',
         'invoice_number',
-        'note',
+        'status',
+        'due_on',
         'paid',
         'paid_at',
-        'payment_reference',
-        'payment_term', // { "type": "cash", "days" : "" }
-        'purchase_order_number',
         'sent',
-        'status',
+        'purchase_order_number',
+        'invoicee', // { "customer": { "type": "contact", "id" : "" }, "for_attention_of" : { "name": "" OR "contact_id" : "" } }
+        'discounts',
+        'grouped_lines',
         'total', // {}
+        'payment_term', // { "type": "cash", "days" : "" }
+        'payments',
+        'payment_reference',
+        'note',
+        'currency_exchange_rate',
+        'expected_payment_method',
+        'file',
+        'deal',
+        'custom_fields',
+        'created_at',
         'updated_at',
         'web_url',
     ];

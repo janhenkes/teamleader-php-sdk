@@ -25,11 +25,11 @@ class Contact extends Model
         'first_name',
         'last_name',
         'salutation',
+        'vat_number',
         'emails', // { "type": "", "email": "" }
         'telephones', // { "type": "", "number": "" }
         'website',
         'addresses', // { "type": "", "address": "" } used in contacts.info
-        'primary_address', // used in contacts.list
         'gender',
         'birthdate',
         'iban',

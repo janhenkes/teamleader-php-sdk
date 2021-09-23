@@ -20,6 +20,8 @@ class CreditNote extends Model
         'paid_at',
         'invoicee',
         'total',
+        'grouped_lines',
+        'currency_exchange_rate',
         'created_at',
         'updated_at',
     ];

@@ -13,7 +13,15 @@ class Department extends Model
         'id',
         'name',
         'vat_number',
+        'address',
+        'emails',
+        'telephones',
+        'website',
         'currency',
+        'iban',
+        'bic',
+        'fiscal_regime',
+        'status',
     ];
 
     /**
