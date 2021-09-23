@@ -77,9 +77,10 @@ $dealPhases = $client->dealPhase()->get();
 # Change log
 
 ## 2.9.0 (2021-09-23)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.8.0...2.9.0)
 
 - Changed base URL to focus.teamleader.eu
-- 
+- Updated entity fields
 
 ## 2.8.0 (2021-02-18)
 [Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.7.1...2.8.0)
