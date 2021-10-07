@@ -3,7 +3,7 @@
 This is a PHP wrapper for the Teamleader API v2. Documentation of the API can be found here: [https://developer.focus.teamleader.eu/](https://developer.focus.teamleader.eu/).
 Please note that the Teamleader API v2 is not complete and some Entities and Actions are missing.
 
-Currently we only support a few entities and per entity only a few actions:
+Currently we support these entities and per entity only a few actions:
 
 1.  Company (create and update, getById)
 2.  Contact (create, update, linkToCompany, getById)
@@ -35,6 +35,12 @@ Currently we only support a few entities and per entity only a few actions:
 Teamleader API v2 works with OAuth2. This means your application needs to be registered on the [Teamleader Marketplace](https://marketplace.focus.teamleader.eu/nl/nl/ontwikkel/integraties) (you can keep them private though).
 
 Please contact me at jan@jannesmannes.nl if you have any feedback or questions.
+
+# Support us
+
+You can support us by [making a donation](https://bunq.me/JannesMannes).
+
+We appreciate you sending us a postcard from your hometown. You'll find our address on our [contact page](https://jannesmannes.nl/contact/) (inspired by [@spatie](https://github.com/spatie)).
 
 # Examples
 
