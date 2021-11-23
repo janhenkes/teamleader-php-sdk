@@ -307,6 +307,7 @@ class Connection
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
+                'X-Api-Version' => '2021-09-01',
             ]
         );
 

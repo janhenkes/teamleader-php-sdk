@@ -11,5 +11,4 @@ $client = new \Teamleader\Client( $connection );
 
 $tags = $client->task()->get();
 
-echo "<pre>";
-var_dump( $tags );
+var_dump($tags);
