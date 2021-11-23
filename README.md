@@ -83,7 +83,7 @@ $dealPhases = $client->dealPhase()->get();
 # Change log
 
 ## 2.9.1 (2021-11-22)
-[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.9.1...2.9.1)
+[Full change log](https://github.com/janhenkes/teamleader-php-sdk/compare/2.9.0...2.9.1)
 
 - Updated Guzzle dependency
 
