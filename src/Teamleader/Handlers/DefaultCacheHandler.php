@@ -20,7 +20,7 @@ class DefaultCacheHandler implements CacheHandlerInterface
         }
 
         $data = $this->maybe_unserialize(fread($handle, $fileSize));
-        if(!is_array($data) || $data['expires'] < time()) {
+        if (!is_array($data) || $data['expires'] < time()) {
             $this->forget($key);
             return null;
         }
@@ -31,7 +31,7 @@ class DefaultCacheHandler implements CacheHandlerInterface
     {
         $my_file = $this->getFileName($key);
         $handle  = fopen($my_file, 'w');
-        fwrite($handle, $this->maybe_serialize([ 'value'=> $value, 'expires'=> time() + ( $expireInMinutes * 60)]));
+        fwrite($handle, $this->maybe_serialize([ 'value'=> $value, 'expires'=> time() + ($expireInMinutes * 60)]));
     }
 
     public function forget($key)

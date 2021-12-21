@@ -26,5 +26,4 @@ class CustomFields extends Model
      * @var string
      */
     protected $endpoint = 'customFieldDefinitions';
-
 }
