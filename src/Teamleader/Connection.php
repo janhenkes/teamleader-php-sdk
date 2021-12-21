@@ -93,13 +93,12 @@ class Connection
     public function getAccessToken()
     {
         $accesstoken = $this->cacheHandler->get('accessToken');
-        if($accesstoken)
-        {
+        if ($accesstoken) {
             return $accesstoken;
         }
 
         $refreshToken = $this->cacheHandler->get('refreshToken');
-        if($refreshToken) {
+        if ($refreshToken) {
             $this->acquireRefreshToken();
 
             return $this->getAccessToken();
@@ -194,22 +193,7 @@ class Connection
             throw new ApiException('Could not acquire or refresh tokens');
         }
 
-        Psr7\rewind_body($response);
-        $body = json_decode($response->getBody()->getContents(), true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new ApiException(
-                'Could not acquire tokens, json decode failed. Got response: ' . $response->getBody()->getContents()
-            );
-        }
-
-        $this->accessToken = array_key_exists('access_token', $body) ? $body['access_token'] : null;
-        $this->storeTokens(
-            $body['access_token'],
-            $body['refresh_token'],
-            $body['expires_in'],
-            time() + $body['expires_in']
-        );
+        $this->storeTokensFromResponse($response);
     }
 
     /**
@@ -239,22 +223,7 @@ class Connection
             throw new ApiException('Could not acquire or refresh tokens');
         }
 
-        Psr7\rewind_body($response);
-        $body = json_decode($response->getBody()->getContents(), true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new ApiException(
-                'Could not acquire tokens, json decode failed. Got response: ' . $response->getBody()->getContents()
-            );
-        }
-
-        $this->accessToken = array_key_exists('access_token', $body) ? $body['access_token'] : null;
-        $this->storeTokens(
-            $body['access_token'],
-            $body['refresh_token'],
-            $body['expires_in'],
-            time() + $body['expires_in']
-        );
+        $this->storeTokensFromResponse($response);
     }
 
     /**
@@ -448,8 +417,6 @@ class Connection
     private function parseResponse(Response $response)
     {
         try {
-            Psr7\rewind_body($response);
-
             return json_decode($response->getBody()->getContents(), true);
         } catch (\RuntimeException $e) {
             throw new ApiException($e->getMessage());
@@ -476,7 +443,6 @@ class Connection
         }
 
         $response = $exception->getResponse();
-        Psr7\rewind_body($response);
         $errorMessage = $response->getBody()->getContents();
         $decodedResponseBody = json_decode($errorMessage, true);
 
@@ -487,7 +453,8 @@ class Connection
         $this->checkWhetherRateLimitHasBeenReached($response, $errorMessage);
 
         throw new ApiException(
-            'Error ' . $response->getStatusCode() . ': ' . $errorMessage, $response->getStatusCode()
+            'Error ' . $response->getStatusCode() . ': ' . $errorMessage,
+            $response->getStatusCode()
         );
     }
 
@@ -522,5 +489,30 @@ class Connection
     private function formatUrl(string $url, string $method = 'get'): string
     {
         return $this->apiUrl . '/' . $url;
+    }
+
+    /**
+     * @param ResponseInterface $response
+     *
+     * @return void
+     * @throws ApiException
+     */
+    private function storeTokensFromResponse(ResponseInterface $response): void
+    {
+        $body = json_decode($response->getBody()->getContents(), true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new ApiException(
+                'Could not acquire tokens, json decode failed. Got response: ' . $response->getBody()->getContents()
+            );
+        }
+
+        $this->accessToken = array_key_exists('access_token', $body) ? $body['access_token'] : null;
+        $this->storeTokens(
+            $body['access_token'],
+            $body['refresh_token'],
+            $body['expires_in'],
+            time() + $body['expires_in']
+        );
     }
 }

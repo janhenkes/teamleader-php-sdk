@@ -52,49 +52,52 @@ class Invoice extends Model
      */
     protected $endpoint = 'invoices';
 
-    public function book( $date = null ) {
+    public function book($date = null)
+    {
         $arguments = [
             'id' => $this->attributes['id'],
-            'on' => $date ?? date( 'Y-m-d' ),
+            'on' => $date ?? date('Y-m-d'),
         ];
 
-        $result = $this->connection()->post( $this->getEndpoint() . '.book', json_encode( $arguments, JSON_FORCE_OBJECT ) );
+        $result = $this->connection()->post($this->getEndpoint() . '.book', json_encode($arguments, JSON_FORCE_OBJECT));
 
         return $result;
     }
 
-    public function registerPayment( $amount, $currency = "EUR", $paidAt = null ) {
+    public function registerPayment($amount, $currency = "EUR", $paidAt = null)
+    {
         $arguments = [
             'id'      => $this->attributes['id'],
             'payment' => [
                 'amount'   => $amount,
                 'currency' => $currency,
             ],
-            'paid_at' => $paidAt ?? date( 'c' ),
+            'paid_at' => $paidAt ?? date('c'),
         ];
 
-        $result = $this->connection()->post( $this->getEndpoint() . '.registerPayment', json_encode( $arguments, JSON_FORCE_OBJECT ) );
+        $result = $this->connection()->post($this->getEndpoint() . '.registerPayment', json_encode($arguments, JSON_FORCE_OBJECT));
 
         return $result;
     }
 
-    public function download( $format = "pdf" ) {
+    public function download($format = "pdf")
+    {
         $arguments = [
             'id'     => $this->attributes['id'],
             'format' => $format,
         ];
 
-        $result = $this->connection()->post( $this->getEndpoint() . '.download', json_encode( $arguments, JSON_FORCE_OBJECT ) );
+        $result = $this->connection()->post($this->getEndpoint() . '.download', json_encode($arguments, JSON_FORCE_OBJECT));
 
         return $result;
     }
 
-    public function file( $format = "pdf" ) {
+    public function file($format = "pdf")
+    {
+        $result = $this->download($format);
 
-        $result = $this->download( $format );
-
-        if ( isset( $result['data'] ) && isset( $result['data']['location'] ) ) {
-            return file_get_contents( $result['data']['location'] );
+        if (isset($result['data']) && isset($result['data']['location'])) {
+            return file_get_contents($result['data']['location']);
         }
 
         return false;
