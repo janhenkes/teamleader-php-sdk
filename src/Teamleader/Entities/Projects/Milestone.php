@@ -20,6 +20,7 @@ class Milestone extends Model
         'starts_on',
         'due_on',
         'name',
+        'description',
         'responsible_user', // { "type": "", "id" : "" }
         'status',
         'invoicing_method',
