@@ -19,6 +19,7 @@ use Teamleader\Entities\General\WorkType;
 use Teamleader\Entities\Invoicing\CreditNote;
 use Teamleader\Entities\Invoicing\Invoice;
 use Teamleader\Entities\Invoicing\PaymentTerm;
+use Teamleader\Entities\Invoicing\Subscription;
 use Teamleader\Entities\Invoicing\TaxRate;
 use Teamleader\Entities\Invoicing\WithholdingTaxRate;
 use Teamleader\Entities\Other\Webhook;
@@ -182,5 +183,10 @@ class Client
     public function quotation(array $attributes = [])
     {
         return new Quotation($this->connection, $attributes);
+    }
+
+    public function subscription(array $attributes = [])
+    {
+        return new Subscription($this->connection, $attributes);
     }
 }
