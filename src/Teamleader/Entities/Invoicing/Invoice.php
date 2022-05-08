@@ -30,6 +30,9 @@ class Invoice extends Model
         'sent',
         'purchase_order_number',
         'invoicee', // { "customer": { "type": "contact", "id" : "" }, "for_attention_of" : { "name": "" OR "contact_id" : "" } }
+        'project', // {}
+        'project_id',
+        'subscription_id',
         'discounts',
         'grouped_lines',
         'total', // {}
