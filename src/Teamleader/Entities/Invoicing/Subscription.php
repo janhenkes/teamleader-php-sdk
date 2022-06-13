@@ -14,16 +14,21 @@ class Subscription extends Model
 
     protected $fillable = [
         'id',
-        'title',
-        'remarks',
-        'status',
         'department', // { "type": "department", "id": "" }
-        'invoicee', // { "customer": { "type": "contact", "id" : "" }, "for_attention_of" : { "name": "" OR "contact_id" : "" } }
-        'project', // {}
+        'title',
+        'status',
         'next_renewal_date',
+        'invoicee', // { "customer": { "type": "contact", "id" : "" }, "for_attention_of" : { "name": "" OR "contact_id" : "" } }
+        'starts_on',
+        'ends_on',
         'periodicity',
+        'payment_term',
+        'grouped_lines',
+        'project', // {}
         'total', // {}
         'web_url',
+        'remarks',
+        'custom_fields',
     ];
 
     /**
