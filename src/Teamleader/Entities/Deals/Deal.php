@@ -7,6 +7,9 @@ use Teamleader\Actions\FindById;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
 
+/**
+ * @property string id
+ */
 class Deal extends Model
 {
     use Storable;
