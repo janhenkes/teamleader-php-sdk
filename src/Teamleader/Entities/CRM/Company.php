@@ -7,6 +7,10 @@ use Teamleader\Actions\FindById;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
 
+/**
+ * @property string id
+ * @property string name
+ */
 class Company extends Model
 {
     use FindAll;

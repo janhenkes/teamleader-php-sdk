@@ -5,8 +5,15 @@ namespace Teamleader\Entities\CRM;
 use Teamleader\Actions\FindAll;
 use Teamleader\Actions\FindById;
 use Teamleader\Actions\Storable;
+use Teamleader\Entities\General\CustomFields;
 use Teamleader\Model;
 
+/**
+ * @property string id
+ * @property string first_name
+ * @property string last_name
+ * @property Company[] companies
+ */
 class Contact extends Model
 {
     use Storable;
@@ -19,6 +26,16 @@ class Contact extends Model
      * @var string
      */
     protected $endpoint = 'contacts';
+
+    /**
+     * @var array
+     */
+    protected $multipleNestedEntities = [
+        'custom_fields' => [
+            'entity' => CustomFields::class,
+            'type' => self::NESTING_TYPE_ARRAY_OF_OBJECTS,
+        ],
+    ];
 
     protected $fillable = [
         'id',

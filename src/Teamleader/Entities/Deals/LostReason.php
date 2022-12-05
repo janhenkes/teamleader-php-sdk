@@ -9,8 +9,7 @@ use Teamleader\Model;
  * @property string id
  * @property string name
  */
-class DealSource extends Model
-{
+class LostReason extends Model {
     use FindAll;
 
     protected $fillable = [
@@ -21,5 +20,5 @@ class DealSource extends Model
     /**
      * @var string
      */
-    protected $endpoint = 'dealSources';
+    protected $endpoint = 'lostReasons';
 }

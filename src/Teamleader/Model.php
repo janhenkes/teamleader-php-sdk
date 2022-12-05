@@ -5,6 +5,7 @@ namespace Teamleader;
 use Teamleader\Entities\CRM\Company;
 use Teamleader\Entities\CRM\Contact;
 use Teamleader\Entities\Deals\Deal;
+use Teamleader\Entities\Deals\Quotation;
 use Teamleader\Entities\General\User;
 use Teamleader\Entities\General\WorkType;
 use Teamleader\Entities\Invoicing\Invoice;
@@ -28,18 +29,19 @@ abstract class Model implements JsonSerializable
     const NESTING_TYPE_NESTED_OBJECTS = 1;
 
     protected $references = [
-        Contact::TYPE => Contact::class,
-        Company::TYPE => Company::class,
-        Deal::TYPE => Deal::class,
-        Invoice::TYPE => Invoice::class,
-        User::TYPE => User::class,
-        Task::TYPE => Task::class,
-        Project::TYPE => Project::class,
-        Milestone::TYPE => Milestone::class,
-        TimeTracking::TYPE => TimeTracking::class,
-        WorkType::TYPE => WorkType::class,
+        Contact::TYPE         => Contact::class,
+        Company::TYPE         => Company::class,
+        Deal::TYPE            => Deal::class,
+        Invoice::TYPE         => Invoice::class,
+        User::TYPE            => User::class,
+        Task::TYPE            => Task::class,
+        Project::TYPE         => Project::class,
+        Milestone::TYPE       => Milestone::class,
+        Quotation::TYPE       => Quotation::class,
+        TimeTracking::TYPE    => TimeTracking::class,
+        WorkType::TYPE        => WorkType::class,
         ProductCategory::TYPE => ProductCategory::class,
-        Product::TYPE => Product::class,
+        Product::TYPE         => Product::class,
     ];
 
     /**
@@ -102,13 +104,13 @@ abstract class Model implements JsonSerializable
      * Model constructor.
      *
      * @param Connection $connection
-     * @param array $attributes
+     * @param array      $attributes
      */
-    public function __construct(Connection $connection, array $attributes = [])
+    public function __construct( Connection $connection, array $attributes = [] )
     {
         $this->connection = $connection;
-        $this->isLoaded = !method_exists($this, 'findById');
-        $this->fill($attributes);
+        $this->isLoaded   = ! method_exists( $this, 'findById' );
+        $this->fill( $attributes );
     }
 
     /**
@@ -136,18 +138,18 @@ abstract class Model implements JsonSerializable
      *
      * @param array $attributes
      */
-    protected function fill(array $attributes): void
+    protected function fill( array $attributes ): void
     {
-        $attributes = $this->fillableFromArray($attributes);
+        $attributes = $this->fillableFromArray( $attributes );
 
-        foreach ($attributes as $key => $attribute) {
-            $this->setAttribute($key, $attribute);
+        foreach ( $attributes as $key => $attribute ) {
+            $this->setAttribute( $key, $attribute );
         }
 
-        if (!empty($attributes)) {
+        if ( ! empty( $attributes ) ) {
             $loadedAttributes = $attributes;
-            unset($loadedAttributes[$this->primaryKey]);
-            $this->isLoaded = !empty($loadedAttributes);
+            unset( $loadedAttributes[ $this->primaryKey ] );
+            $this->isLoaded = ! empty( $loadedAttributes );
         }
     }
 
@@ -158,10 +160,10 @@ abstract class Model implements JsonSerializable
      *
      * @return array
      */
-    protected function fillableFromArray(array $attributes): array
+    protected function fillableFromArray( array $attributes ): array
     {
-        if (count($this->fillable) > 0) {
-            return array_intersect_key($attributes, array_flip($this->fillable));
+        if ( count( $this->fillable ) > 0 ) {
+            return array_intersect_key( $attributes, array_flip( $this->fillable ) );
         }
 
         return $attributes;
@@ -172,19 +174,19 @@ abstract class Model implements JsonSerializable
      *
      * @return bool
      */
-    protected function isFillable(string $key): bool
+    protected function isFillable( string $key ): bool
     {
-        return in_array($key, $this->fillable);
+        return in_array( $key, $this->fillable );
     }
 
     /**
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      */
-    protected function setAttribute(string $key, $value): void
+    protected function setAttribute( string $key, $value ): void
     {
-        if ($this->isFillable($key)) {
-            $this->attributes[$key] = $this->addReferences($value);
+        if ( $this->isFillable( $key ) ) {
+            $this->attributes[ $key ] = $this->addReferences( $value );
         }
     }
 
@@ -193,64 +195,77 @@ abstract class Model implements JsonSerializable
      *
      * @return mixed
      */
-    private function addReferences($data)
+    private function addReferences( $data )
     {
-        if (!is_array($data)) {
+        if ( ! is_array( $data ) ) {
             return $data;
         }
 
-        if (count($data) === 2 && array_key_exists('type', $data) && array_key_exists('id', $data)) {
-            if (!array_key_exists($data['type'], $this->references)) {
+        if ( count( $data ) === 2 && array_key_exists( 'type', $data ) && array_key_exists( 'id', $data ) ) {
+            if ( ! array_key_exists( $data['type'], $this->references ) ) {
                 return $data;
             }
 
-            if (isset(static::$referencesCache[$data['type']][$data['id']])) {
-                return static::$referencesCache[$data['type']][$data['id']];
+            if ( isset( static::$referencesCache[ $data['type'] ][ $data['id'] ] ) ) {
+                return static::$referencesCache[ $data['type'] ][ $data['id'] ];
             }
-            $class = $this->references[$data['type']];
-            static::$referencesCache[$data['type']][$data['id']] = new $class($this->connection, ['id' => $data['id']]);
+            $class                                                   = $this->references[ $data['type'] ];
+            static::$referencesCache[ $data['type'] ][ $data['id'] ] = new $class( $this->connection, [ 'id' => $data['id'] ] );
 
-            return static::$referencesCache[$data['type']][$data['id']];
+            return static::$referencesCache[ $data['type'] ][ $data['id'] ];
         }
 
-        foreach ($data as $key => $value) {
-            $data[$key] = $this->addReferences($value);
+        foreach ( $data as $key => $value ) {
+            $data[ $key ] = $this->addReferences( $value );
         }
 
         return $data;
     }
 
+    public function load()
+    {
+        if ( ! $this->isLoaded && method_exists( $this, 'findById' ) ) {
+            try {
+                $this->findById();
+            } catch ( ApiException $apiException ) {
+                $this->isLoaded = true;
+            }
+        }
+
+        return $this;
+    }
+
     /**
      * @param string $key
      *
      * @return mixed
      */
-    public function __get(string $key)
+    public function __get( string $key )
     {
-        if (!$this->isLoaded && method_exists($this, 'findById')) {
-            if ($key === $this->primaryKey && isset($this->attributes[$key])) {
-                return $this->attributes[$key];
+        if ( ! $this->isLoaded && method_exists( $this, 'findById' ) ) {
+            if ( $key === $this->primaryKey && isset( $this->attributes[ $key ] ) ) {
+                return $this->attributes[ $key ];
             }
 
             try {
                 $this->findById();
-            } catch (ApiException $apiException) {
+            } catch ( ApiException $apiException ) {
                 $this->isLoaded = true;
             }
         }
 
-        if (isset($this->attributes[$key])) {
-            return $this->attributes[$key];
+        if ( isset( $this->attributes[ $key ] ) ) {
+            return $this->attributes[ $key ];
         }
     }
 
     /**
      * @param string $key
-     * @param $value
+     * @param        $value
      */
-    public function __set(string $key, $value): void
+    public function __set( string $key, $value ): void
     {
-        $this->setAttribute($key, $value);
+        $this->setAttribute( $key, $value );
     }
 
     /**
@@ -258,11 +273,11 @@ abstract class Model implements JsonSerializable
      */
     public function exists(): bool
     {
-        if (!array_key_exists($this->primaryKey, $this->attributes)) {
+        if ( ! array_key_exists( $this->primaryKey, $this->attributes ) ) {
             return false;
         }
 
-        return !empty($this->attributes[$this->primaryKey]);
+        return ! empty( $this->attributes[ $this->primaryKey ] );
     }
 
     /**
@@ -272,7 +287,7 @@ abstract class Model implements JsonSerializable
     {
         $array = $this->getArrayWithNestedObjects();
 
-        return json_encode($array, JSON_FORCE_OBJECT);
+        return json_encode( $array, JSON_FORCE_OBJECT );
     }
 
     /**
@@ -280,47 +295,47 @@ abstract class Model implements JsonSerializable
      */
     public function jsonWithNamespace(): string
     {
-        if ($this->namespace !== '') {
-            return json_encode([$this->namespace => $this->getArrayWithNestedObjects()], JSON_FORCE_OBJECT);
+        if ( $this->namespace !== '' ) {
+            return json_encode( [ $this->namespace => $this->getArrayWithNestedObjects() ], JSON_FORCE_OBJECT );
         }
 
         return $this->json();
     }
 
-    private function getArrayWithNestedObjects(bool $useAttributesAppend = true): array
+    private function getArrayWithNestedObjects( bool $useAttributesAppend = true ): array
     {
-        $result = [];
+        $result                 = [];
         $multipleNestedEntities = $this->getMultipleNestedEntities();
 
-        foreach ($this->attributes as $attributeName => $attributeValue) {
-            if (!is_object($attributeValue)) {
-                $result[$attributeName] = $attributeValue;
+        foreach ( $this->attributes as $attributeName => $attributeValue ) {
+            if ( ! is_object( $attributeValue ) ) {
+                $result[ $attributeName ] = $attributeValue;
             }
 
-            if (array_key_exists($attributeName, $this->getSingleNestedEntities())) {
-                $result[$attributeName] = $attributeValue->attributes;
+            if ( array_key_exists( $attributeName, $this->getSingleNestedEntities() ) ) {
+                $result[ $attributeName ] = $attributeValue->attributes;
             }
 
-            if (array_key_exists($attributeName, $multipleNestedEntities)) {
+            if ( array_key_exists( $attributeName, $multipleNestedEntities ) ) {
                 $attributeNameToUse = $attributeName;
-                if ($useAttributesAppend) {
+                if ( $useAttributesAppend ) {
                     $attributeNameToUse .= '_attributes';
                 }
 
-                $result[$attributeNameToUse] = [];
-                foreach ($attributeValue as $attributeEntity) {
-                    $result[$attributeNameToUse][] = $attributeEntity->attributes;
+                $result[ $attributeNameToUse ] = [];
+                foreach ( $attributeValue as $attributeEntity ) {
+                    $result[ $attributeNameToUse ][] = $attributeEntity->attributes;
 
-                    if ($multipleNestedEntities[$attributeName]['type'] === self::NESTING_TYPE_NESTED_OBJECTS) {
-                        $result[$attributeNameToUse] = (object) $result[$attributeNameToUse];
+                    if ( $multipleNestedEntities[ $attributeName ]['type'] === self::NESTING_TYPE_NESTED_OBJECTS ) {
+                        $result[ $attributeNameToUse ] = (object) $result[ $attributeNameToUse ];
                     }
                 }
 
                 if (
-                    $multipleNestedEntities[$attributeName]['type'] === self::NESTING_TYPE_NESTED_OBJECTS
-                    && empty($result[$attributeNameToUse])
+                    $multipleNestedEntities[ $attributeName ]['type'] === self::NESTING_TYPE_NESTED_OBJECTS
+                    && empty( $result[ $attributeNameToUse ] )
                 ) {
-                    $result[$attributeNameToUse] = new \StdClass();
+                    $result[ $attributeNameToUse ] = new \StdClass();
                 }
             }
         }
@@ -335,10 +350,10 @@ abstract class Model implements JsonSerializable
      *
      * @return static
      */
-    public function makeFromResponse(array $response): self
+    public function makeFromResponse( array $response ): self
     {
-        $entity = new static($this->connection);
-        $entity->selfFromResponse($response);
+        $entity = new static( $this->connection );
+        $entity->selfFromResponse( $response );
 
         return $entity;
     }
@@ -350,26 +365,26 @@ abstract class Model implements JsonSerializable
      *
      * @return static
      */
-    public function selfFromResponse(array $response): self
+    public function selfFromResponse( array $response ): self
     {
-        if (isset($response['data'])) {
+        if ( isset( $response['data'] ) ) {
             $response = $response['data'];
         }
 
-        $this->fill($response);
+        $this->fill( $response );
 
-        foreach ($this->getSingleNestedEntities() as $key => $value) {
-            if (isset($response[$key])) {
-                $entityName = 'Teamleader\Entities\\' . $value;
-                $this->$key = new $entityName($this->connection, $response[$key]);
+        foreach ( $this->getSingleNestedEntities() as $key => $value ) {
+            if ( isset( $response[ $key ] ) ) {
+                $entityName = $value;
+                $this->$key = new $entityName( $this->connection, $response[ $key ] );
             }
         }
 
-        foreach ($this->getMultipleNestedEntities() as $key => $value) {
-            if (isset($response[$key])) {
-                $entityName = 'Teamleader\Entities\\' . $value['entity'];
-                $instaniatedEntity = new $entityName($this->connection);
-                $this->$key = $instaniatedEntity->collectionFromResult($response[$key]);
+        foreach ( $this->getMultipleNestedEntities() as $key => $value ) {
+            if ( isset( $response[ $key ] ) ) {
+                $entityName        = $value['entity'];
+                $instaniatedEntity = new $entityName( $this->connection );
+                $this->$key        = $instaniatedEntity->collectionFromResult( $response[ $key ] );
             }
         }
 
@@ -381,25 +396,25 @@ abstract class Model implements JsonSerializable
      *
      * @return array
      */
-    public function collectionFromResult($result): array
+    public function collectionFromResult( $result ): array
     {
-        if (!$result) {
+        if ( ! $result ) {
             return [];
         }
 
-        if (isset($result['data'])) {
+        if ( isset( $result['data'] ) ) {
             $result = $result['data'];
         }
 
         // If we have one result which is not an assoc array, make it the first element of an array for the
         // collectionFromResult function so we always return a collection from filter
-        if ((bool) count(array_filter(array_keys($result), 'is_string'))) {
-            $result = [$result];
+        if ( (bool) count( array_filter( array_keys( $result ), 'is_string' ) ) ) {
+            $result = [ $result ];
         }
 
         $collection = [];
-        foreach ($result as $r) {
-            $collection[] = static::makeFromResponse($r);
+        foreach ( $result as $r ) {
+            $collection[] = static::makeFromResponse( $r );
         }
 
         return $collection;
@@ -429,8 +444,8 @@ abstract class Model implements JsonSerializable
     public function __debugInfo(): array
     {
         $result = [];
-        foreach ($this->fillable as $attribute) {
-            $result[$attribute] = $this->$attribute;
+        foreach ( $this->fillable as $attribute ) {
+            $result[ $attribute ] = $this->$attribute;
         }
 
         return $result;
@@ -451,21 +466,21 @@ abstract class Model implements JsonSerializable
      *
      * @return bool
      */
-    public function __isset(string $name): bool
+    public function __isset( string $name ): bool
     {
-        return (isset($this->attributes[$name]) && !is_null($this->attributes[$name]));
+        return ( isset( $this->attributes[ $name ] ) && ! is_null( $this->attributes[ $name ] ) );
     }
 
     public function jsonSerialize()
     {
-        if (!defined('static::TYPE')) {
+        if ( ! defined( 'static::TYPE' ) ) {
             return $this->getArrayWithNestedObjects();
         }
 
         $primaryKey = $this->primaryKey;
 
         return (object) [
-            'type' => static::TYPE,
+            'type'      => static::TYPE,
             $primaryKey => $this->$primaryKey,
         ];
     }

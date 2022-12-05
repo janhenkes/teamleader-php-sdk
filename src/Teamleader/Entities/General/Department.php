@@ -5,6 +5,11 @@ namespace Teamleader\Entities\General;
 use Teamleader\Actions\FindAll;
 use Teamleader\Model;
 
+/**
+ * @property string id
+ * @property string name
+ * @property string vat_number
+ */
 class Department extends Model
 {
     use FindAll;
