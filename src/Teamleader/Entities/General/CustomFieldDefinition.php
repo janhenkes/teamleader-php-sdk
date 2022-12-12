@@ -7,7 +7,7 @@ use Teamleader\Actions\FindById;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
 
-class CustomFields extends Model
+class CustomFieldDefinition extends Model
 {
     use FindAll;
     use FindById;

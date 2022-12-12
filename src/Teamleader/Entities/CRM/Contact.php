@@ -5,7 +5,7 @@ namespace Teamleader\Entities\CRM;
 use Teamleader\Actions\FindAll;
 use Teamleader\Actions\FindById;
 use Teamleader\Actions\Storable;
-use Teamleader\Entities\General\CustomFields;
+use Teamleader\Entities\General\CustomFieldDefinition;
 use Teamleader\Model;
 
 /**
@@ -32,7 +32,7 @@ class Contact extends Model
      */
     protected $multipleNestedEntities = [
         'custom_fields' => [
-            'entity' => CustomFields::class,
+            'entity' => CustomFieldDefinition::class,
             'type' => self::NESTING_TYPE_ARRAY_OF_OBJECTS,
         ],
     ];

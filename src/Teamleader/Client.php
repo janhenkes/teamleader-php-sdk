@@ -13,7 +13,7 @@ use Teamleader\Entities\Deals\DealPhase;
 use Teamleader\Entities\Deals\DealSource;
 use Teamleader\Entities\Deals\LostReason;
 use Teamleader\Entities\Deals\Quotation;
-use Teamleader\Entities\General\CustomFields;
+use Teamleader\Entities\General\CustomFieldDefinition;
 use Teamleader\Entities\General\Department;
 use Teamleader\Entities\General\User;
 use Teamleader\Entities\General\WorkType;
@@ -177,7 +177,7 @@ class Client
 
     public function customFields(array $attributes = [])
     {
-        return new CustomFields($this->connection, $attributes);
+        return new CustomFieldDefinition($this->connection, $attributes);
     }
 
     public function quotation(array $attributes = [])

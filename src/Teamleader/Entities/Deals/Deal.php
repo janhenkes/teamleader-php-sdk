@@ -5,7 +5,7 @@ namespace Teamleader\Entities\Deals;
 use Teamleader\Actions\FindAll;
 use Teamleader\Actions\FindById;
 use Teamleader\Actions\Storable;
-use Teamleader\Entities\General\CustomFields;
+use Teamleader\Entities\General\CustomFieldDefinition;
 use Teamleader\Entities\General\Department;
 use Teamleader\Model;
 
@@ -85,10 +85,6 @@ class Deal extends Model
      * @var array
      */
     protected $multipleNestedEntities = [
-        'custom_fields' => [
-            'entity' => CustomFields::class,
-            'type'   => self::NESTING_TYPE_ARRAY_OF_OBJECTS,
-        ],
         'quotations'    => [
             'entity' => Quotation::class,
             'type'   => self::NESTING_TYPE_ARRAY_OF_OBJECTS,
