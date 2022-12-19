@@ -31,10 +31,6 @@ class Contact extends Model
      * @var array
      */
     protected $multipleNestedEntities = [
-        'custom_fields' => [
-            'entity' => CustomFieldDefinition::class,
-            'type' => self::NESTING_TYPE_ARRAY_OF_OBJECTS,
-        ],
     ];
 
     protected $fillable = [
