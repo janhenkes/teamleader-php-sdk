@@ -32,6 +32,8 @@ class Quotation extends Model
      */
     protected $endpoint = 'quotations';
 
+    protected $createAction = 'create';
+
     /**
      * @return mixed
      */
