@@ -287,7 +287,7 @@ abstract class Model implements JsonSerializable
     {
         $array = $this->getArrayWithNestedObjects();
 
-        return json_encode( $array, JSON_FORCE_OBJECT );
+        return json_encode( $array );
     }
 
     /**
@@ -296,7 +296,7 @@ abstract class Model implements JsonSerializable
     public function jsonWithNamespace(): string
     {
         if ( $this->namespace !== '' ) {
-            return json_encode( [ $this->namespace => $this->getArrayWithNestedObjects() ], JSON_FORCE_OBJECT );
+            return json_encode( [ $this->namespace => $this->getArrayWithNestedObjects() ] );
         }
 
         return $this->json();
