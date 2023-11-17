@@ -37,6 +37,12 @@ class Deal extends Model
         'updated_at',
         'web_url',
         'custom_fields',
+
+        // Fields for creating a deal
+        'source_id',
+        'phase_id',
+        'department_id',
+        'responsible_user_id',
     ];
 
     /**
