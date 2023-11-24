@@ -29,7 +29,7 @@ class Deal extends Model
         'weighted_value',
         'purchase_order_number',
         'current_phase', // { "type" : "", "id" : "" }
-        'responsible_user_id', // { "type": "", "id" : "" }
+        'responsible_user', // { "type": "", "id" : "" }
         'closed_at',
         'source', // { "type": "", "id" : "" }
         'lost_reason',
