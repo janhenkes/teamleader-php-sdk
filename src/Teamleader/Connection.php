@@ -20,6 +20,8 @@ use Teamleader\Handlers\DefaultCacheHandler;
 
 class Connection
 {
+    const API_VERSION = '2022-09-15';
+
     /**
      * @var string
      */
@@ -276,7 +278,7 @@ class Connection
             [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-                'X-Api-Version' => '2021-09-01',
+                'X-Api-Version' => self::API_VERSION,
             ]
         );
 
