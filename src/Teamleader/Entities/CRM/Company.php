@@ -32,6 +32,7 @@ class Company extends Model
         'preferred_currency',
         'payment_term', // { "type": "" }
         'invoicing_preferences', // { "electronic_invoicing_address": "" }
+        'responsible_user', // { "type": "", "id" : "" }
         'responsible_user_id', // { "type": "", "id" : "" }
         'remarks',
         'added_at',
