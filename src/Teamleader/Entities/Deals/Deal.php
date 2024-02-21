@@ -37,6 +37,7 @@ class Deal extends Model
         'updated_at',
         'web_url',
         'custom_fields',
+        'quotations',
 
         // Fields for creating a deal
         'source_id',

@@ -4,7 +4,7 @@ namespace Teamleader\Actions\Attributes;
 
 use JsonSerializable;
 
-class Filter implements JsonSerializable
+class   Filter implements JsonSerializable
 {
     /**
      * These can be overwitten in filters specific for a certain entity to aid with validation

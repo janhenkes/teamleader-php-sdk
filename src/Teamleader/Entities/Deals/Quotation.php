@@ -7,8 +7,7 @@ use Teamleader\Actions\FindById;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
 
-class Quotation extends Model
-{
+class Quotation extends Model {
     use Storable;
     use FindAll;
     use FindById;
@@ -25,6 +24,10 @@ class Quotation extends Model
         'created_at',
         'updated_at',
         'status',
+        'currency',
+
+        // Fields for creating a deal
+        'deal_id',
     ];
 
     /**
@@ -32,30 +35,34 @@ class Quotation extends Model
      */
     protected $endpoint = 'quotations';
 
+    protected $createAction = 'create';
+
     /**
      * @return mixed
      */
 
-    public function download($format = "pdf")
-    {
+    public function download( $format = "pdf" ) {
         $arguments = [
             'id'     => $this->attributes['id'],
             'format' => $format,
         ];
 
-        $result = $this->connection()->post($this->getEndpoint() . '.download', json_encode($arguments, JSON_FORCE_OBJECT));
+        $result = $this->connection()->post( $this->getEndpoint() . '.download', json_encode( $arguments, JSON_FORCE_OBJECT ) );
 
         return $result;
     }
 
-    public function file($format = "pdf")
-    {
-        $result = $this->download($format);
+    public function file( $format = "pdf" ) {
+        $result = $this->download( $format );
 
-        if (isset($result['data']) && isset($result['data']['location'])) {
-            return file_get_contents($result['data']['location']);
+        if ( isset( $result['data'] ) && isset( $result['data']['location'] ) ) {
+            return file_get_contents( $result['data']['location'] );
         }
 
         return false;
+    }
+
+    public function accept() {
+        return $this->connection()->post( $this->getEndpoint() . '.accept', json_encode( [ 'id' => $this->attributes['id'] ], JSON_FORCE_OBJECT ) );
     }
 }

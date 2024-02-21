@@ -20,7 +20,7 @@ use Teamleader\Handlers\DefaultCacheHandler;
 
 class Connection
 {
-    const API_VERSION = '2022-09-15';
+    const API_VERSION = '2023-10-01';
 
     /**
      * @var string
