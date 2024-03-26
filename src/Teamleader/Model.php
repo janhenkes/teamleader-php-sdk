@@ -2,15 +2,15 @@
 
 namespace Teamleader;
 
+use JsonSerializable;
 use Teamleader\Entities\CRM\Company;
 use Teamleader\Entities\CRM\Contact;
 use Teamleader\Entities\Deals\Deal;
 use Teamleader\Entities\General\User;
 use Teamleader\Entities\General\WorkType;
 use Teamleader\Entities\Invoicing\Invoice;
-use JsonSerializable;
-use Teamleader\Entities\Products\ProductCategory;
 use Teamleader\Entities\Products\Product;
+use Teamleader\Entities\Products\ProductCategory;
 use Teamleader\Entities\Projects\Milestone;
 use Teamleader\Entities\Projects\Project;
 use Teamleader\Entities\Tasks\Task;
@@ -456,7 +456,7 @@ abstract class Model implements JsonSerializable
         return (isset($this->attributes[$name]) && !is_null($this->attributes[$name]));
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         if (!defined('static::TYPE')) {
             return $this->getArrayWithNestedObjects();
