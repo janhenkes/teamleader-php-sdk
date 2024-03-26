@@ -456,7 +456,7 @@ abstract class Model implements JsonSerializable
         return (isset($this->attributes[$name]) && !is_null($this->attributes[$name]));
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         if (!defined('static::TYPE')) {
             return $this->getArrayWithNestedObjects();
