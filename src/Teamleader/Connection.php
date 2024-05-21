@@ -128,7 +128,6 @@ class Connection
     {
         $this->cacheHandler->forget('accessToken');
         $this->cacheHandler->forget('refreshToken');
-        $this->cacheHandler->forget('tokenExpire');
     }
 
     /**
@@ -196,6 +195,7 @@ class Connection
         $response = $this->client()->post($this->getTokenUrl(), $body);
 
         if (!$response->getStatusCode() == 200) {
+            $this->clearTokens();
             throw new ApiException('Could not acquire or refresh tokens');
         }
 
