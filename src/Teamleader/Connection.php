@@ -82,8 +82,12 @@ class Connection
      */
     private $cacheHandler;
 
-    public function __construct(CacheHandlerInterface $cacheHandler = null)
+    public function __construct(CacheHandlerInterface $cacheHandler = null, array $middleWares = null)
     {
+        if ( $middleWares ) {
+            $this->middleWares = $middleWares;
+        }
+
         $this->client();
         $this->cacheHandler = $cacheHandler ?? new DefaultCacheHandler();
     }
@@ -130,7 +134,7 @@ class Connection
     /**
      * @return GuzzleHttpClient
      */
-    private function client(): GuzzleHttpClient
+    private function client()
     {
         if ($this->client) {
             return $this->client;
