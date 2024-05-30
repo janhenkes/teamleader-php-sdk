@@ -183,23 +183,22 @@ class Connection
      */
     private function acquireRefreshToken(): void
     {
-        $body = [
-            'form_params' => [
-                'client_id' => $this->clientId,
-                'client_secret' => $this->clientSecret,
-                'refresh_token' => $this->cacheHandler->get('refreshToken'),
-                'grant_type' => 'refresh_token',
-            ],
-        ];
+        try {
+            $body = [
+                'form_params' => [
+                    'client_id'     => $this->clientId,
+                    'client_secret' => $this->clientSecret,
+                    'refresh_token' => $this->cacheHandler->get( 'refreshToken' ),
+                    'grant_type'    => 'refresh_token',
+                ],
+            ];
 
-        $response = $this->client()->post($this->getTokenUrl(), $body);
+            $response = $this->client()->post( $this->getTokenUrl(), $body );
 
-        if (!$response->getStatusCode() == 200) {
-            $this->clearTokens();
-            throw new ApiException('Could not acquire or refresh tokens');
+            $this->storeTokensFromResponse( $response );
+        } catch (Exception $exception) {
+            throw new ApiException( 'Could not acquire or refresh tokens' );
         }
-
-        $this->storeTokensFromResponse($response);
     }
 
     /**
@@ -211,25 +210,25 @@ class Connection
             $this->authorizeRedirect();
         }
 
-        $code = rawurldecode($_GET['code']);
+        try {
+            $code = rawurldecode( $_GET['code'] );
 
-        $body = [
-            'form_params' => [
-                'code' => $code,
-                'client_id' => $this->clientId,
-                'client_secret' => $this->clientSecret,
-                'redirect_uri' => $this->redirectUrl,
-                'grant_type' => 'authorization_code',
-            ],
-        ];
+            $body = [
+                'form_params' => [
+                    'code'          => $code,
+                    'client_id'     => $this->clientId,
+                    'client_secret' => $this->clientSecret,
+                    'redirect_uri'  => $this->redirectUrl,
+                    'grant_type'    => 'authorization_code',
+                ],
+            ];
 
-        $response = $this->client()->post($this->getTokenUrl(), $body);
+            $response = $this->client()->post( $this->getTokenUrl(), $body );
 
-        if ($response->getStatusCode() != 200) {
-            throw new ApiException('Could not acquire or refresh tokens');
+            $this->storeTokensFromResponse( $response );
+        } catch (Exception $exception) {
+            throw new ApiException( 'Could not acquire or refresh tokens' );
         }
-
-        $this->storeTokensFromResponse($response);
     }
 
     /**

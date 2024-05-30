@@ -5,6 +5,7 @@ namespace Teamleader;
 use Teamleader\Entities\CRM\Company;
 use Teamleader\Entities\CRM\Contact;
 use Teamleader\Entities\Deals\Deal;
+use Teamleader\Entities\Deals\DealPhase;
 use Teamleader\Entities\General\User;
 use Teamleader\Entities\General\WorkType;
 use Teamleader\Entities\Invoicing\Invoice;
@@ -31,6 +32,7 @@ abstract class Model implements JsonSerializable
         Contact::TYPE => Contact::class,
         Company::TYPE => Company::class,
         Deal::TYPE => Deal::class,
+        DealPhase::TYPE => DealPhase::class,
         Invoice::TYPE => Invoice::class,
         User::TYPE => User::class,
         Task::TYPE => Task::class,
