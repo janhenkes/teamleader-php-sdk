@@ -46,6 +46,7 @@ class Deal extends Model {
         'web_url',
         'custom_fields',
         'quotations',
+        'phase_history',
 
         // Fields for creating a deal
         'source_id',
