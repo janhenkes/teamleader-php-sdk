@@ -78,15 +78,22 @@ class Connection
     protected $middleWares = [];
 
     /**
+     * @var array Additional Guzzle config
+     */
+    protected $guzzleConfig = [];
+
+    /**
      * @var CacheHandlerInterface
      */
     private $cacheHandler;
 
-    public function __construct(CacheHandlerInterface $cacheHandler = null, array $middleWares = null)
+    public function __construct(CacheHandlerInterface $cacheHandler = null, array $middleWares = null, array $guzzleConfig = [])
     {
         if ( $middleWares ) {
             $this->middleWares = $middleWares;
         }
+
+        $this->guzzleConfig = $guzzleConfig;
 
         $this->client();
         $this->cacheHandler = $cacheHandler ?? new DefaultCacheHandler();
@@ -144,13 +151,11 @@ class Connection
             $handlerStack->push($middleWare);
         }
 
-        $this->client = new GuzzleHttpClient(
-            [
-                'http_errors' => true,
-                'handler' => $handlerStack,
-                'expect' => false,
-            ]
-        );
+        $this->client = new GuzzleHttpClient( array_merge( [
+            'http_errors' => true,
+            'handler'     => $handlerStack,
+            'expect'      => false,
+        ], $this->guzzleConfig ) );
 
         return $this->client;
     }
