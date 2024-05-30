@@ -7,13 +7,21 @@ use Teamleader\Actions\FindById;
 use Teamleader\Actions\Storable;
 use Teamleader\Model;
 
-class Company extends Model
-{
+class Company extends Model {
     use FindAll;
     use Storable;
     use FindById;
 
     const TYPE = 'company';
+
+    protected $multipleNestedEntities = [
+        'related_contacts'  => [
+            'entity' => 'CRM\Contact',
+        ],
+        'related_companies' => [
+            'entity' => 'CRM\Company',
+        ],
+    ];
 
     protected $fillable = [
         'id',
@@ -41,6 +49,11 @@ class Company extends Model
         'tags',
         'custom_fields',
         'marketing_mails_consent',
+        'related_contacts',
+        'related_companies',
+
+        //
+        'includes', // when used, the response will include related_companies and/or related_contacts
     ];
 
     /**
