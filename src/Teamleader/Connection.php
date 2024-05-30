@@ -323,7 +323,7 @@ class Connection
                 $params['page'] = new Page(100);
             }
 
-            $request = $this->createRequest('GET', $this->formatUrl($url, 'get'), json_encode($params));
+            $request = $this->createRequest('POST', $this->formatUrl($url, 'get'), json_encode($params));
             $response = $this->client()->send($request);
 
             $json = $this->parseResponse($response);

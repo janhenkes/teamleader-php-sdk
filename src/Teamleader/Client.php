@@ -14,6 +14,7 @@ use Teamleader\Entities\Deals\DealSource;
 use Teamleader\Entities\Deals\Quotation;
 use Teamleader\Entities\General\CustomFields;
 use Teamleader\Entities\General\Department;
+use Teamleader\Entities\General\Note;
 use Teamleader\Entities\General\User;
 use Teamleader\Entities\General\WorkType;
 use Teamleader\Entities\Invoicing\CreditNote;
@@ -174,7 +175,7 @@ class Client
     {
         return new Product($this->connection, $attributes);
     }
-  
+
     public function customFields(array $attributes = [])
     {
         return new CustomFields($this->connection, $attributes);
@@ -188,5 +189,10 @@ class Client
     public function subscription(array $attributes = [])
     {
         return new Subscription($this->connection, $attributes);
+    }
+
+    public function notes(array $attributes = [])
+    {
+        return new Note($this->connection, $attributes);
     }
 }
