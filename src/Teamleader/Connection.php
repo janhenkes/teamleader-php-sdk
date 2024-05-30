@@ -273,17 +273,21 @@ class Connection
         string $endpoint,
         $body = null,
         array $params = [],
-        array $headers = []
+        array $headers = [],
+        ?string $contentType ='application/json',
     ): Request {
         // Add default json headers to the request
         $headers = array_merge(
             $headers,
             [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json',
                 'X-Api-Version' => self::API_VERSION,
             ]
         );
+
+        if ( $contentType ) {
+            $headers['Accept']       = 'application/json';
+            $headers['Content-Type'] = 'application/json';
+        }
 
         // If access token is not set or token has expired, acquire new token
         if (empty($this->getAccessToken())) {
@@ -360,10 +364,10 @@ class Connection
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws InvalidAccessTokenException
      */
-    public function post(string $url, $body)
+    public function post(string $url, $body, ?string $contentType ='application/json')
     {
         try {
-            $request = $this->createRequest('POST', $this->formatUrl($url, 'post'), $body);
+            $request = $this->createRequest('POST', $this->formatUrl($url, 'post'), $body, contentType: $contentType);
             $response = $this->client()->send($request);
 
             return $this->parseResponse($response);
@@ -493,6 +497,9 @@ class Connection
      */
     private function formatUrl(string $url, string $method = 'get'): string
     {
+        if (str_starts_with($url, 'https://')) {
+            return $url;
+        }
         return $this->apiUrl . '/' . $url;
     }
 

@@ -2,6 +2,7 @@
 
 namespace Teamleader;
 
+use Teamleader\Entities\Files\File;
 use Teamleader\Entities\Calendar\ActivityType;
 use Teamleader\Entities\Calendar\Event;
 use Teamleader\Entities\CRM\Company;
@@ -74,6 +75,10 @@ class Client
     public function dealSource(array $attributes = [])
     {
         return new DealSource($this->connection, $attributes);
+    }
+
+    public function files( array $attributes = [] ) {
+        return new File($this->connection, $attributes);
     }
 
     public function user(array $attributes = [])
