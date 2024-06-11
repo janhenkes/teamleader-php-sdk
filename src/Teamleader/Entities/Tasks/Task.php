@@ -11,6 +11,7 @@ class Task extends Model
 {
     use FindAll;
     use FindById;
+    use Storable;
 
     const TYPE = 'task';
 
