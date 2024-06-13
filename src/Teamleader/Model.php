@@ -295,15 +295,10 @@ abstract class Model implements JsonSerializable
         $multipleNestedEntities = $this->getMultipleNestedEntities();
 
         foreach ($this->attributes as $attributeName => $attributeValue) {
-            if (!is_object($attributeValue)) {
-                $result[$attributeName] = $attributeValue;
-            }
 
             if (array_key_exists($attributeName, $this->getSingleNestedEntities())) {
                 $result[$attributeName] = $attributeValue->attributes;
-            }
-
-            if (array_key_exists($attributeName, $multipleNestedEntities)) {
+            } elseif (array_key_exists($attributeName, $multipleNestedEntities)) {
                 $attributeNameToUse = $attributeName;
                 if ($useAttributesAppend) {
                     $attributeNameToUse .= '_attributes';
@@ -324,6 +319,8 @@ abstract class Model implements JsonSerializable
                 ) {
                     $result[$attributeNameToUse] = new \StdClass();
                 }
+            } else {
+                $result[$attributeName] = $attributeValue;
             }
         }
 

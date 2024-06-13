@@ -21,6 +21,7 @@ class Quotation extends Model {
         'currency_exchange_rate', // {"from": "", "to": "", "rate": n},
         'total', // { "tax_exclusive":{"amount":n, "currency": ""}, "tax_inclusive":{"amount":n, "currency": ""}, "taxes": [{ "rate": n, "taxable" : {"amount":n, "currency": ""}, "tax":{"amount": n, "currency": "" }}}]}
         'discounts',
+        'text',
         'created_at',
         'updated_at',
         'status',
